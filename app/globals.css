@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    /* Light theme colors based on provided values */
+    --background: 210 20% 98%; /* #F9FAFB */
+    --foreground: 215 28% 17%; /* #1F2937 */
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 215 28% 17%; /* #1F2937 */
+    --popover: 0 0% 100%; /* #FFFFFF */
+    --popover-foreground: 215 28% 17%; /* #1F2937 */
+    --primary: 174 77% 26%; /* #0F766E */
+    --primary-foreground: 210 20% 98%; /* #F9FAFB */
+    --secondary: 200 80% 8%; /* #031F28 */
+    --secondary-foreground: 210 20% 98%; /* #F9FAFB */
+    --muted: 195 20% 93%; /* #E6F1F4 */
+    --muted-foreground: 215 16% 47%; /* #6B7280 */
+    --accent: 195 20% 93%; /* #E6F1F4 */
+    --accent-foreground: 200 80% 8%; /* #031F28 */
+    --destructive: 0 84.2% 60.2%; /* Keep original */
+    --destructive-foreground: 210 20% 98%; /* #F9FAFB */
+    --border: 220 13% 91%; /* #E5E7EB */
+    --input: 220 13% 91%; /* #E5E7EB */
+    --ring: 174 77% 26%; /* #0F766E */
+
+    /* Chart colors for data visualization */
+    --chart-1: 174 77% 26%; /* #0F766E */
+    --chart-2: 200 80% 8%; /* #031F28 */
+    --chart-3: 195 20% 93%; /* #E6F1F4 */
+    --chart-4: 196 53% 24%; /* #1D4E5F */
+    --chart-5: 350 80% 60%; /* Keep original */
+
+    --radius: 0.5rem;
+    --sidebar-background: 195 20% 93%; /* #E6F1F4 */
+    --sidebar-foreground: 215 28% 17%; /* #1F2937 */
+    --sidebar-primary: 174 77% 26%; /* #0F766E */
+    --sidebar-primary-foreground: 210 20% 98%; /* #F9FAFB */
+    --sidebar-accent: 195 20% 93%; /* #E6F1F4 */
+    --sidebar-accent-foreground: 200 80% 8%; /* #031F28 */
+    --sidebar-border: 220 13% 91%; /* #E5E7EB */
+    --sidebar-ring: 174 77% 26%; /* #0F766E */
+  }
+
+  .dark {
+    /* Dark theme colors based on provided values */
+    --background: 196 80% 6%; /* #02141B */
+    --foreground: 195 20% 93%; /* #E6F1F4 */
+    --card: 196 70% 13%; /* #0A2C38 */
+    --card-foreground: 195 20% 93%; /* #E6F1F4 */
+    --popover: 196 70% 13%; /* #0A2C38 */
+    --popover-foreground: 195 20% 93%; /* #E6F1F4 */
+    --primary: 200 80% 8%; /* #031F28 */
+    --primary-foreground: 195 20% 93%; /* #E6F1F4 */
+    --secondary: 196 53% 24%; /* #1D4E5F */
+    --secondary-foreground: 195 20% 93%; /* #E6F1F4 */
+    --muted: 196 70% 9%; /* #05212B */
+    --muted-foreground: 195 20% 80%; /* Lighter version of #E6F1F4 */
+    --accent: 196 53% 24%; /* #1D4E5F */
+    --accent-foreground: 195 20% 93%; /* #E6F1F4 */
+    --destructive: 0 70% 45%; /* Keep original */
+    --destructive-foreground: 195 20% 93%; /* #E6F1F4 */
+    --border: 196 65% 14%; /* #093142 */
+    --input: 196 65% 14%; /* #093142 */
+    --ring: 196 53% 24%; /* #1D4E5F */
+
+    /* Dark theme chart colors */
+    --chart-1: 200 80% 8%; /* #031F28 */
+    --chart-2: 196 53% 24%; /* #1D4E5F */
+    --chart-3: 174 77% 26%; /* #0F766E */
+    --chart-4: 195 20% 93%; /* #E6F1F4 */
+    --chart-5: 350 70% 55%; /* Keep original */
+
+    --sidebar-background: 196 70% 9%; /* #05212B */
+    --sidebar-foreground: 195 20% 93%; /* #E6F1F4 */
+    --sidebar-primary: 200 80% 8%; /* #031F28 */
+    --sidebar-primary-foreground: 195 20% 93%; /* #E6F1F4 */
+    --sidebar-accent: 196 70% 13%; /* #0A2C38 */
+    --sidebar-accent-foreground: 195 20% 93%; /* #E6F1F4 */
+    --sidebar-border: 196 65% 14%; /* #093142 */
+    --sidebar-ring: 196 53% 24%; /* #1D4E5F */
+  }
+
+  body {
+    @apply antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h5 {
+    @apply font-bold tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  .section-title {
+    @apply relative pb-2 mb-6 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-20 after:h-1 after:bg-primary;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .btn-primary-gradient {
+    @apply bg-gradient-to-r from-primary to-accent text-white hover:opacity-90 transition-opacity;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .nav-link {
+    @apply relative text-foreground hover:text-primary transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full;
+  }
+}
