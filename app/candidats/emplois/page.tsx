@@ -1,3 +1,5 @@
+"use client"
+
 import { JobCard } from "@/components/ui/job-card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
