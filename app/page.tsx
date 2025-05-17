@@ -166,6 +166,15 @@ export default function Home() {
             <div className="grid gap-8 md:grid-cols-2">
               {/* Candidates Section */}
               <div className="rounded-lg bg-white p-8 shadow-md">
+              <div className="mb-4 rounded-lg overflow-hidden">
+                  <Image
+                    src="/images/young-woman-office-style-clothes-glasses-holds-tablet-with-documents-employee.jpg"
+                    alt="Candidate with tablet"
+                    width={600}
+                    height={400}
+                    className="w-full object-cover"
+                  />
+                </div>
                 <h2 className="text-2xl font-bold mb-4">Pour les Candidats</h2>
                 <p className="text-muted-foreground mb-6">
                   Explorez les opportunités et lancez votre avenir professionnel avec notre accompagnement personnalisé.
@@ -230,7 +239,7 @@ export default function Home() {
               <div className="rounded-lg bg-white p-8 shadow-md">
                 <div className="mb-4 rounded-lg overflow-hidden">
                   <Image
-                    src="/images/young-woman-office-style-clothes-glasses-holds-tablet-with-documents-employee.jpg"
+                    src="/images/business-meeting-office-recuiteers.jpg"
                     alt="Candidate with tablet"
                     width={600}
                     height={400}
