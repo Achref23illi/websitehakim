@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -7,6 +9,11 @@ import { JobCard } from "@/components/ui/job-card"
 import { SiteHeader } from "@/components/site-header"
 
 export default function DesignSystemPage() {
+  // Mock function for JobCard component
+  const handleApply = () => {
+    console.log("Postuler clicked")
+  }
+
   return (
     <>
       <SiteHeader />
@@ -138,7 +145,7 @@ export default function DesignSystemPage() {
                 salary="75 000 $ - 95 000 $ par année"
                 tags={["React", "Node.js"]}
                 postedDate="Il y a 2 jours"
-                onApply={() => console.log("Postuler")}
+                onApply={handleApply}
               />
             </div>
           </div>
