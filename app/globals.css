@@ -14,8 +14,8 @@ body {
 
 @layer base {
   :root {
-    /* Light theme colors based on provided values */
-    --background: 210 20% 98%; /* #F9FAFB */
+    /* Light theme colors based on provided values - slightly adjusted to reduce white */
+    --background: 210 20% 96%; /* Slightly darker than before */
     --foreground: 215 28% 17%; /* #1F2937 */
     --card: 0 0% 100%; /* #FFFFFF */
     --card-foreground: 215 28% 17%; /* #1F2937 */
@@ -54,18 +54,18 @@ body {
   }
 
   .dark {
-    /* Dark theme colors based on provided values */
-    --background: 196 80% 6%; /* #02141B */
+    /* Dark theme colors based on provided values - enhanced for better contrast */
+    --background: 196 80% 4%; /* Darker than before */
     --foreground: 195 20% 93%; /* #E6F1F4 */
-    --card: 196 70% 13%; /* #0A2C38 */
+    --card: 196 70% 10%; /* Darker than before */
     --card-foreground: 195 20% 93%; /* #E6F1F4 */
-    --popover: 196 70% 13%; /* #0A2C38 */
+    --popover: 196 70% 10%; /* Darker than before */
     --popover-foreground: 195 20% 93%; /* #E6F1F4 */
-    --primary: 200 80% 8%; /* #031F28 */
+    --primary: 174 77% 26%; /* Changed to match light theme primary for consistency */
     --primary-foreground: 195 20% 93%; /* #E6F1F4 */
     --secondary: 196 53% 24%; /* #1D4E5F */
     --secondary-foreground: 195 20% 93%; /* #E6F1F4 */
-    --muted: 196 70% 9%; /* #05212B */
+    --muted: 196 70% 7%; /* Darker than before */
     --muted-foreground: 195 20% 80%; /* Lighter version of #E6F1F4 */
     --accent: 196 53% 24%; /* #1D4E5F */
     --accent-foreground: 195 20% 93%; /* #E6F1F4 */
@@ -76,17 +76,17 @@ body {
     --ring: 196 53% 24%; /* #1D4E5F */
 
     /* Dark theme chart colors */
-    --chart-1: 200 80% 8%; /* #031F28 */
+    --chart-1: 174 77% 26%; /* #0F766E */
     --chart-2: 196 53% 24%; /* #1D4E5F */
     --chart-3: 174 77% 26%; /* #0F766E */
     --chart-4: 195 20% 93%; /* #E6F1F4 */
     --chart-5: 350 70% 55%; /* Keep original */
 
-    --sidebar-background: 196 70% 9%; /* #05212B */
+    --sidebar-background: 196 70% 7%; /* Darker than before */
     --sidebar-foreground: 195 20% 93%; /* #E6F1F4 */
-    --sidebar-primary: 200 80% 8%; /* #031F28 */
+    --sidebar-primary: 174 77% 26%; /* Changed to match light theme primary */
     --sidebar-primary-foreground: 195 20% 93%; /* #E6F1F4 */
-    --sidebar-accent: 196 70% 13%; /* #0A2C38 */
+    --sidebar-accent: 196 70% 10%; /* Darker than before */
     --sidebar-accent-foreground: 195 20% 93%; /* #E6F1F4 */
     --sidebar-border: 196 65% 14%; /* #093142 */
     --sidebar-ring: 196 53% 24%; /* #1D4E5F */
@@ -146,5 +146,104 @@ body {
 
   .nav-link {
     @apply relative text-foreground hover:text-primary transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full;
+  }
+
+  /* Magic UI Components */
+  .magic-card {
+    @apply relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-sm shadow-xl transition-all duration-500;
+  }
+
+  .magic-card::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 opacity-0 transition-opacity duration-500;
+  }
+
+  .magic-card:hover::before {
+    @apply opacity-100;
+  }
+
+  .magic-card::after {
+    content: "";
+    @apply absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-primary/20 via-white/5 to-secondary/20 opacity-0 transition-opacity duration-500 -z-10;
+  }
+
+  .magic-card:hover::after {
+    @apply opacity-100;
+  }
+
+  .magic-button {
+    @apply relative overflow-hidden rounded-full bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg transition-all duration-300 hover:shadow-primary/20 hover:shadow-xl;
+  }
+
+  .magic-button::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 transition-opacity duration-300;
+  }
+
+  .magic-button:hover::before {
+    @apply opacity-100;
+  }
+
+  .magic-input {
+    @apply rounded-full border border-white/20 bg-white/5 backdrop-blur-md px-4 py-2 shadow-inner transition-all duration-300 focus:border-primary/30 focus:bg-white/10 focus:shadow-primary/5 focus:outline-none;
+  }
+
+  .floating-element {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  .glow {
+    @apply relative;
+  }
+
+  .glow::after {
+    content: "";
+    @apply absolute inset-0 rounded-inherit bg-gradient-to-r from-primary/20 to-secondary/20 blur-xl opacity-0 transition-opacity duration-500 -z-10;
+  }
+
+  .glow:hover::after {
+    @apply opacity-100;
+  }
+
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer::before {
+    content: "";
+    position: absolute;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    width: 50%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    100% {
+      left: 150%;
+    }
+  }
+
+  .magic-border {
+    @apply relative rounded-2xl p-[1px] bg-gradient-to-r from-primary/50 via-white/10 to-secondary/50;
+  }
+
+  .magic-border-content {
+    @apply rounded-2xl bg-background/80 backdrop-blur-md p-6;
   }
 }

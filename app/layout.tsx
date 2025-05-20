@@ -1,5 +1,7 @@
 import type React from "react"
 import { ThemeProvider } from "@/components/theme-provider"
+import { SiteHeader } from "@/components/site-header"
+import { FloatingContact } from "@/components/floating-contact"
 import "./globals.css"
 import type { Metadata } from "next"
 
@@ -16,9 +18,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body>
+      <body className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
-          {children}
+          <div className="flex min-h-screen flex-col">
+            <SiteHeader />
+            <main className="flex-1 pt-24">{children}</main>
+            <FloatingContact />
+          </div>
         </ThemeProvider>
       </body>
     </html>
