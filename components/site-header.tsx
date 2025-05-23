@@ -103,7 +103,7 @@ export function SiteHeader() {
                 </button>
 
                 {activeDropdown === "candidats" && (
-                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]">
+                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60] pointer-events-auto">
                     <div className="p-6">
                       <div className="mb-4">
                         <h3 className="font-bold text-lg mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -287,7 +287,7 @@ export function SiteHeader() {
               </button>
 
               {activeDropdown === "account" && (
-                <div className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]">
+                <div className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60] pointer-events-auto">
                   <div className="p-4">
                     <div className="space-y-2">
                       <Link
@@ -328,7 +328,7 @@ export function SiteHeader() {
               </button>
 
               {activeDropdown === "language" && (
-                <div className="absolute top-full right-0 mt-2 w-32 rounded-xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]">
+                <div className="absolute top-full right-0 mt-2 w-32 rounded-xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60] pointer-events-auto">
                   <div className="p-2">
                     <button
                       className="w-full text-left p-2 rounded-lg hover:bg-primary/5 transition-all duration-300 cursor-pointer"
@@ -460,7 +460,18 @@ export function SiteHeader() {
       )}
 
       {/* Overlay to close dropdowns */}
-      {activeDropdown && <div className="fixed inset-0 z-30" onClick={closeDropdown} />}
+      {activeDropdown && (
+        <div
+          className="fixed inset-0 z-30 pointer-events-none"
+          aria-hidden="true"
+        >
+          <div
+            className="absolute inset-0"
+            style={{ zIndex: 1, pointerEvents: "auto" }}
+            onClick={closeDropdown}
+          />
+        </div>
+      )}
     </header>
   )
 }
