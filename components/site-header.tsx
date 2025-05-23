@@ -18,8 +18,8 @@ import {
   Building2,
   Phone,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { Button } from "@/components/ui/button" // Assuming this path is correct
+import { ThemeToggle } from "@/components/theme-toggle" // Assuming this path is correct
 
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -27,7 +27,7 @@ export function SiteHeader() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const pathname = usePathname()
 
-  // Handle scroll effect
+  // Handle scroll effect for header background
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
@@ -36,7 +36,7 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Check if a link is active
+  // Check if a navigation link is active
   const isActive = (path: string) => {
     if (path === "/") {
       return pathname === path
@@ -44,21 +44,28 @@ export function SiteHeader() {
     return pathname?.startsWith(path)
   }
 
+  // Toggle dropdown visibility
   const handleDropdownToggle = (dropdown: string) => {
     setActiveDropdown(activeDropdown === dropdown ? null : dropdown)
   }
 
+  // Close any active dropdown
   const closeDropdown = () => {
     setActiveDropdown(null)
   }
 
-  // Effect to close dropdown when clicking outside, using the overlay
-  // This part of your logic is already handled by the overlay div itself.
-
-  // Effect to close dropdown on route change
+  // Close dropdown on route change
   useEffect(() => {
     if (activeDropdown) {
       closeDropdown();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
@@ -78,10 +85,10 @@ export function SiteHeader() {
       >
         <div className="flex h-16 items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center transition-opacity hover:opacity-90">
+            <Link href="/" className="flex items-center transition-opacity hover:opacity-90" onClick={closeDropdown}>
               <div className="relative">
                 <Image
-                  src="/images/rp-logo-1.png"
+                  src="/images/rp-logo-1.png" // Ensure this path is correct
                   alt="Recruitment Plus Logo"
                   width={160}
                   height={36}
@@ -100,12 +107,12 @@ export function SiteHeader() {
               {/* Candidats Dropdown */}
               <div className="relative">
                 <button
-                  onClick={(e) => { // MODIFIED: Added event (e) and stopPropagation
+                  onClick={(e) => {
                     e.stopPropagation();
                     handleDropdownToggle("candidats");
                   }}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
-                    isActive("/candidats")
+                    isActive("/candidats") || activeDropdown === "candidats"
                       ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
                       : "hover:bg-white/10 hover:text-primary hover:shadow-md"
                   }`}
@@ -119,8 +126,8 @@ export function SiteHeader() {
 
                 {activeDropdown === "candidats" && (
                   <div
-                    onClick={(e) => e.stopPropagation()} // MODIFIED: Stop propagation for clicks within the panel
-                    className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60] pointer-events-auto"
+                    onClick={(e) => e.stopPropagation()}
+                    className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]"
                   >
                     <div className="p-6">
                       <div className="mb-4">
@@ -133,7 +140,7 @@ export function SiteHeader() {
                         <Link
                           href="/candidats"
                           className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
-                          onClick={closeDropdown} // This is correct: clicking a link should close it
+                          onClick={closeDropdown}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Briefcase className="h-4 w-4 text-primary" />
@@ -178,12 +185,12 @@ export function SiteHeader() {
               {/* Employeurs Dropdown */}
               <div className="relative">
                 <button
-                  onClick={(e) => { // MODIFIED: Added event (e) and stopPropagation
+                  onClick={(e) => {
                     e.stopPropagation();
                     handleDropdownToggle("employeurs");
                   }}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
-                    isActive("/employeurs")
+                    isActive("/employeurs") || activeDropdown === "employeurs"
                       ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
                       : "hover:bg-white/10 hover:text-primary hover:shadow-md"
                   }`}
@@ -197,7 +204,7 @@ export function SiteHeader() {
 
                 {activeDropdown === "employeurs" && (
                   <div
-                    onClick={(e) => e.stopPropagation()} // MODIFIED: Stop propagation for clicks within the panel
+                    onClick={(e) => e.stopPropagation()}
                     className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]"
                   >
                     <div className="p-6">
@@ -260,6 +267,7 @@ export function SiteHeader() {
                     ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
                     : "hover:bg-white/10 hover:text-primary hover:shadow-md"
                 }`}
+                onClick={closeDropdown}
               >
                 À Propos
               </Link>
@@ -271,6 +279,7 @@ export function SiteHeader() {
                     ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
                     : "hover:bg-white/10 hover:text-primary hover:shadow-md"
                 }`}
+                onClick={closeDropdown}
               >
                 Services
               </Link>
@@ -281,6 +290,7 @@ export function SiteHeader() {
             <Link
               href="/blog"
               className="hidden lg:flex px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary hover:shadow-md"
+              onClick={closeDropdown}
             >
               Blog
             </Link>
@@ -288,17 +298,23 @@ export function SiteHeader() {
             <button
               className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary hover:shadow-md"
               aria-label="Rechercher"
+              // Add onClick handler for search functionality if needed
             >
               <Search className="h-4 w-4" />
             </button>
 
+            {/* Account Dropdown */}
             <div className="relative hidden md:block">
               <button
-                onClick={(e) => { // MODIFIED
+                onClick={(e) => {
                   e.stopPropagation();
                   handleDropdownToggle("account");
                 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary hover:shadow-md"
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                    activeDropdown === "account"
+                      ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
+                      : "hover:bg-white/10 hover:text-primary hover:shadow-md"
+                  }`}
                 aria-label="Compte"
               >
                 <User className="h-4 w-4" />
@@ -309,8 +325,8 @@ export function SiteHeader() {
 
               {activeDropdown === "account" && (
                 <div
-                  onClick={(e) => e.stopPropagation()} // MODIFIED
-                  className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60] pointer-events-auto"
+                  onClick={(e) => e.stopPropagation()}
+                  className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]"
                 >
                   <div className="p-4">
                     <div className="space-y-2">
@@ -336,17 +352,22 @@ export function SiteHeader() {
               )}
             </div>
 
+            {/* Language Dropdown */}
             <div className="relative">
               <button
-                onClick={(e) => { // MODIFIED
+                onClick={(e) => {
                   e.stopPropagation();
                   handleDropdownToggle("language");
                 }}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary hover:shadow-md"
+                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                    activeDropdown === "language"
+                      ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
+                      : "hover:bg-white/10 hover:text-primary hover:shadow-md"
+                  }`}
                 aria-label="Changer de langue"
               >
                 <Globe className="h-4 w-4" />
-                <span className="hidden md:inline">FR</span>
+                <span className="hidden md:inline">FR</span> {/* Assuming FR is default */}
                 <ChevronDown
                   className={`h-4 w-4 transition-transform duration-300 ${activeDropdown === "language" ? "rotate-180" : ""}`}
                 />
@@ -354,14 +375,15 @@ export function SiteHeader() {
 
               {activeDropdown === "language" && (
                 <div
-                  onClick={(e) => e.stopPropagation()} // MODIFIED
-                  className="absolute top-full right-0 mt-2 w-32 rounded-xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60] pointer-events-auto"
+                  onClick={(e) => e.stopPropagation()}
+                  className="absolute top-full right-0 mt-2 w-32 rounded-xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]"
                 >
                   <div className="p-2">
                     <button
                       className="w-full text-left p-2 rounded-lg hover:bg-primary/5 transition-all duration-300 cursor-pointer"
-                      onClick={() => { // Assuming language selection should also close the dropdown
-                        // Add language change logic here
+                      onClick={() => {
+                        // Add language change logic here for French
+                        console.log("Language set to French");
                         closeDropdown();
                       }}
                     >
@@ -369,8 +391,9 @@ export function SiteHeader() {
                     </button>
                     <button
                       className="w-full text-left p-2 rounded-lg hover:bg-primary/5 transition-all duration-300 cursor-pointer"
-                      onClick={() => { // Assuming language selection should also close the dropdown
-                        // Add language change logic here
+                      onClick={() => {
+                        // Add language change logic here for English
+                        console.log("Language set to English");
                         closeDropdown();
                       }}
                     >
@@ -386,11 +409,13 @@ export function SiteHeader() {
             <Button
               size="sm"
               className="hidden md:inline-flex rounded-xl bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+              // Add onClick for contact if it's a link or opens a modal
             >
               <Phone className="mr-2 h-4 w-4" />
               Contact
             </Button>
 
+            {/* Mobile Menu Toggle */}
             <button
               className="lg:hidden p-2 rounded-xl hover:bg-white/10 transition-all duration-300"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -402,11 +427,11 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Panel */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden mt-2 mx-2 rounded-2xl bg-background/80 backdrop-blur-xl shadow-2xl border border-white/20 overflow-hidden animate-in slide-in-from-top-5 duration-300">
-          {/* ... (Mobile menu content remains the same, ensure its links close the mobile menu) ... */}
-           <div className="py-6 space-y-6 px-6">
+        <div className="lg:hidden mt-2 mx-2 rounded-2xl bg-background/80 backdrop-blur-xl shadow-2xl border border-white/20 overflow-y-auto max-h-[calc(100vh-5rem)] animate-in slide-in-from-top-5 duration-300">
+          <div className="py-6 space-y-6 px-6">
+            {/* Mobile Menu Content (ensure links close the mobile menu) */}
             <div className="space-y-4">
               <div className="font-bold text-lg bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                 Candidats
@@ -427,6 +452,14 @@ export function SiteHeader() {
                 >
                   <Search className="h-4 w-4 text-primary" />
                   Offres d'emploi
+                </Link>
+                 <Link
+                  href="/candidats/faire-carriere"
+                  className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  Faire carrière avec R+
                 </Link>
               </nav>
             </div>
@@ -452,10 +485,18 @@ export function SiteHeader() {
                   <Users className="h-4 w-4 text-primary" />
                   Industries desservies
                 </Link>
+                <Link
+                  href="/employeurs/publier-offre"
+                  className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  Publier une offre
+                </Link>
               </nav>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 border-t border-white/10 pt-4">
               <Link
                 href="/a-propos"
                 className="flex items-center gap-3 px-3 py-2 font-medium rounded-xl hover:bg-primary/5 transition-all duration-300"
@@ -471,6 +512,14 @@ export function SiteHeader() {
                 <Briefcase className="h-4 w-4 text-primary" />
                 Services
               </Link>
+               <Link
+                href="/blog"
+                className="flex items-center gap-3 px-3 py-2 font-medium rounded-xl hover:bg-primary/5 transition-all duration-300"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Search className="h-4 w-4 text-primary" /> {/* Placeholder icon, adjust as needed */}
+                Blog
+              </Link>
               <Link
                 href="/login"
                 className="flex items-center gap-3 px-3 py-2 font-medium rounded-xl hover:bg-primary/5 transition-all duration-300"
@@ -479,12 +528,23 @@ export function SiteHeader() {
                 <LogIn className="h-4 w-4 text-primary" />
                 Se connecter
               </Link>
+               <Link
+                href="/register"
+                className="flex items-center gap-3 px-3 py-2 font-medium rounded-xl hover:bg-primary/5 transition-all duration-300"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <User className="h-4 w-4 text-primary" />
+                Créer un compte
+              </Link>
             </div>
 
             <div className="pt-4 border-t border-white/10">
               <Button
                 className="w-full rounded-xl bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  // Add contact action here
+                  setIsMobileMenuOpen(false);
+                }}
               >
                 <Phone className="mr-2 h-4 w-4" />
                 Contact
@@ -494,18 +554,13 @@ export function SiteHeader() {
         </div>
       )}
 
-      {/* Overlay to close dropdowns */}
+      {/* Overlay to close dropdowns when clicking outside */}
       {activeDropdown && (
         <div
-          className="fixed inset-0 z-30" // pointer-events-none is not needed here if the clickable child is correctly set up
+          className="fixed inset-0 z-40" // z-index below dropdown panel (z-[60]) but above other content
+          onClick={closeDropdown}
           aria-hidden="true"
-        >
-          <div
-            className="absolute inset-0" // This is the clickable area
-            style={{ zIndex: 1, pointerEvents: "auto" }} // zIndex relative to parent (z-30)
-            onClick={closeDropdown} // This closes any active dropdown
-          />
-        </div>
+        />
       )}
     </header>
   )
