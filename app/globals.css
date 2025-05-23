@@ -164,7 +164,21 @@ body {
 
   .magic-card::after {
     content: "";
-    @apply absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-primary/20 via-white/5 to-secondary/20 opacity-0 transition-opacity duration-500 -z-10;
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    left: -1px;
+    border-radius: 1rem;
+    background: linear-gradient(
+      to bottom right,
+      rgba(var(--primary), 0.2),
+      rgba(255, 255, 255, 0.05),
+      rgba(var(--secondary), 0.2)
+    );
+    opacity: 0;
+    transition: opacity 500ms;
+    z-index: -10;
   }
 
   .magic-card:hover::after {

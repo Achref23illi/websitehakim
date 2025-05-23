@@ -4,20 +4,27 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { Search, Globe, Menu, X, ChevronDown, User, LogIn, Sparkles } from "lucide-react"
+import {
+  Search,
+  Globe,
+  Menu,
+  X,
+  ChevronDown,
+  User,
+  LogIn,
+  Sparkles,
+  Briefcase,
+  Users,
+  Building2,
+  Phone,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const pathname = usePathname()
 
   // Handle scroll effect
@@ -37,20 +44,24 @@ export function SiteHeader() {
     return pathname?.startsWith(path)
   }
 
+  const handleDropdownToggle = (dropdown: string) => {
+    setActiveDropdown(activeDropdown === dropdown ? null : dropdown)
+  }
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4">
+    <header className="fixed top-0 left-0 right-0 z-50 px-2 md:px-4">
       <div
         className={`
-          mx-auto max-w-7xl rounded-full transition-all duration-500 mt-4
+          mx-auto max-w-7xl rounded-2xl transition-all duration-500 mt-2
           ${
             isScrolled
-              ? "bg-background/60 backdrop-blur-lg shadow-lg border border-white/10"
-              : "bg-background/30 backdrop-blur-md shadow-md border border-white/5"
+              ? "bg-background/70 backdrop-blur-xl shadow-2xl border border-white/20"
+              : "bg-background/40 backdrop-blur-lg shadow-xl border border-white/10"
           }
         `}
       >
-        <div className="flex h-14 items-center justify-between px-6">
-          <div className="flex items-center gap-6">
+        <div className="flex h-16 items-center justify-between px-4 md:px-6">
+          <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center transition-opacity hover:opacity-90">
               <div className="relative">
                 <Image
@@ -58,7 +69,7 @@ export function SiteHeader() {
                   alt="Recruitment Plus Logo"
                   width={160}
                   height={36}
-                  className="h-7 w-auto"
+                  className="h-8 w-auto"
                 />
                 {!isScrolled && (
                   <span className="absolute -top-1 -right-1 flex h-2 w-2">
@@ -68,224 +79,268 @@ export function SiteHeader() {
                 )}
               </div>
             </Link>
-            <nav className="hidden md:flex gap-1">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                      isActive("/candidats")
-                        ? "text-primary bg-primary/10 backdrop-blur-sm"
-                        : "hover:bg-white/10 hover:text-primary"
-                    }`}
-                  >
-                    Candidats
-                    <ChevronDown className="h-4 w-4" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="start"
-                  className="w-56 rounded-xl bg-background/80 backdrop-blur-lg border border-white/10 shadow-lg"
-                >
-                  <DropdownMenuItem asChild>
-                    <Link href="/candidats" className="cursor-pointer rounded-lg">
-                      Vue d'ensemble
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/candidats/emplois" className="cursor-pointer rounded-lg">
-                      Offres d'emploi
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/candidats/faire-carriere" className="cursor-pointer rounded-lg">
-                      Faire carrière avec R+
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/candidats/impulsion" className="cursor-pointer rounded-lg">
-                      Programme Impulsion
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                      isActive("/employeurs")
-                        ? "text-primary bg-primary/10 backdrop-blur-sm"
-                        : "hover:bg-white/10 hover:text-primary"
-                    }`}
-                  >
-                    Employeurs
-                    <ChevronDown className="h-4 w-4" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="start"
-                  className="w-56 rounded-xl bg-background/80 backdrop-blur-lg border border-white/10 shadow-lg"
+            <nav className="hidden lg:flex gap-2">
+              {/* Candidats Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => handleDropdownToggle("candidats")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                    isActive("/candidats")
+                      ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
+                      : "hover:bg-white/10 hover:text-primary hover:shadow-md"
+                  }`}
                 >
-                  <DropdownMenuItem asChild>
-                    <Link href="/employeurs" className="cursor-pointer rounded-lg">
-                      Vue d'ensemble
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/employeurs/industries" className="cursor-pointer rounded-lg">
-                      Industries desservies
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/employeurs/publier-offre" className="cursor-pointer rounded-lg">
-                      Publier une offre
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/employeurs/solutions" className="cursor-pointer rounded-lg">
-                      Solutions de recrutement
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  <Users className="h-4 w-4" />
+                  Candidats
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-300 ${activeDropdown === "candidats" ? "rotate-180" : ""}`}
+                  />
+                </button>
+
+                {activeDropdown === "candidats" && (
+                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/90 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300">
+                    <div className="p-6">
+                      <div className="mb-4">
+                        <h3 className="font-bold text-lg mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                          Pour les Candidats
+                        </h3>
+                        <p className="text-sm text-muted-foreground">Explorez vos opportunités de carrière</p>
+                      </div>
+                      <div className="space-y-3">
+                        <Link
+                          href="/candidats"
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
+                          onClick={() => setActiveDropdown(null)}
+                        >
+                          <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                            <Briefcase className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Vue d'ensemble</div>
+                            <div className="text-xs text-muted-foreground">Découvrez nos services</div>
+                          </div>
+                        </Link>
+                        <Link
+                          href="/candidats/emplois"
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
+                          onClick={() => setActiveDropdown(null)}
+                        >
+                          <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                            <Search className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Offres d'emploi</div>
+                            <div className="text-xs text-muted-foreground">Trouvez votre emploi idéal</div>
+                          </div>
+                        </Link>
+                        <Link
+                          href="/candidats/faire-carriere"
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
+                          onClick={() => setActiveDropdown(null)}
+                        >
+                          <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                            <Sparkles className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Faire carrière avec R+</div>
+                            <div className="text-xs text-muted-foreground">Accompagnement personnalisé</div>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Employeurs Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => handleDropdownToggle("employeurs")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                    isActive("/employeurs")
+                      ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
+                      : "hover:bg-white/10 hover:text-primary hover:shadow-md"
+                  }`}
+                >
+                  <Building2 className="h-4 w-4" />
+                  Employeurs
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-300 ${activeDropdown === "employeurs" ? "rotate-180" : ""}`}
+                  />
+                </button>
+
+                {activeDropdown === "employeurs" && (
+                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/90 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300">
+                    <div className="p-6">
+                      <div className="mb-4">
+                        <h3 className="font-bold text-lg mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                          Pour les Employeurs
+                        </h3>
+                        <p className="text-sm text-muted-foreground">Solutions de recrutement sur mesure</p>
+                      </div>
+                      <div className="space-y-3">
+                        <Link
+                          href="/employeurs"
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
+                          onClick={() => setActiveDropdown(null)}
+                        >
+                          <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                            <Building2 className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Vue d'ensemble</div>
+                            <div className="text-xs text-muted-foreground">Nos solutions RH</div>
+                          </div>
+                        </Link>
+                        <Link
+                          href="/employeurs/industries"
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
+                          onClick={() => setActiveDropdown(null)}
+                        >
+                          <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                            <Users className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Industries desservies</div>
+                            <div className="text-xs text-muted-foreground">Secteurs d'expertise</div>
+                          </div>
+                        </Link>
+                        <Link
+                          href="/employeurs/publier-offre"
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
+                          onClick={() => setActiveDropdown(null)}
+                        >
+                          <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                            <Sparkles className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Publier une offre</div>
+                            <div className="text-xs text-muted-foreground">Trouvez vos talents</div>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <Link
                 href="/a-propos"
-                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                   isActive("/a-propos")
-                    ? "text-primary bg-primary/10 backdrop-blur-sm"
-                    : "hover:bg-white/10 hover:text-primary"
+                    ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
+                    : "hover:bg-white/10 hover:text-primary hover:shadow-md"
                 }`}
               >
                 À Propos
               </Link>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                      isActive("/services")
-                        ? "text-primary bg-primary/10 backdrop-blur-sm"
-                        : "hover:bg-white/10 hover:text-primary"
-                    }`}
-                  >
-                    Services
-                    <ChevronDown className="h-4 w-4" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="start"
-                  className="w-56 rounded-xl bg-background/80 backdrop-blur-lg border border-white/10 shadow-lg"
-                >
-                  <DropdownMenuItem asChild>
-                    <Link href="/services" className="cursor-pointer rounded-lg">
-                      Tous nos services
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-white/10" />
-                  <DropdownMenuItem asChild>
-                    <Link href="/services/recrutement-local" className="cursor-pointer rounded-lg">
-                      Recrutement Local
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/services/recrutement-national" className="cursor-pointer rounded-lg">
-                      Recrutement National
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/services/recrutement-international" className="cursor-pointer rounded-lg">
-                      Recrutement International
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/services/recherche-cadres" className="cursor-pointer rounded-lg">
-                      Recherche de Cadres
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Link
+                href="/services"
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  isActive("/services")
+                    ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
+                    : "hover:bg-white/10 hover:text-primary hover:shadow-md"
+                }`}
+              >
+                Services
+              </Link>
             </nav>
           </div>
 
-          <div className="flex items-center gap-1 md:gap-2">
+          <div className="flex items-center gap-2">
             <Link
               href="/blog"
-              className="hidden md:flex px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary"
+              className="hidden lg:flex px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary hover:shadow-md"
             >
               Blog
             </Link>
 
             <button
-              className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary"
+              className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary hover:shadow-md"
               aria-label="Rechercher"
             >
               <Search className="h-4 w-4" />
-              <span className="sr-only md:not-sr-only">Recherche</span>
             </button>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary"
-                  aria-label="Compte"
-                >
-                  <User className="h-4 w-4" />
-                  <span>Compte</span>
-                  <ChevronDown className="h-4 w-4" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="w-56 rounded-xl bg-background/80 backdrop-blur-lg border border-white/10 shadow-lg"
+            <div className="relative hidden md:block">
+              <button
+                onClick={() => handleDropdownToggle("account")}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary hover:shadow-md"
+                aria-label="Compte"
               >
-                <DropdownMenuItem asChild>
-                  <Link href="/login" className="cursor-pointer rounded-lg">
-                    <LogIn className="mr-2 h-4 w-4" />
-                    <span>Se connecter</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/register" className="cursor-pointer rounded-lg">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Créer un compte</span>
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                <User className="h-4 w-4" />
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-300 ${activeDropdown === "account" ? "rotate-180" : ""}`}
+                />
+              </button>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary"
-                  aria-label="Changer de langue"
-                >
-                  <Globe className="h-4 w-4" />
-                  <span className="hidden md:inline">FR</span>
-                  <ChevronDown className="hidden md:block h-4 w-4" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="rounded-xl bg-background/80 backdrop-blur-lg border border-white/10 shadow-lg"
+              {activeDropdown === "account" && (
+                <div className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-background/90 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300">
+                  <div className="p-4">
+                    <div className="space-y-2">
+                      <Link
+                        href="/login"
+                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
+                        onClick={() => setActiveDropdown(null)}
+                      >
+                        <LogIn className="h-4 w-4 text-primary" />
+                        <span>Se connecter</span>
+                      </Link>
+                      <Link
+                        href="/register"
+                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
+                        onClick={() => setActiveDropdown(null)}
+                      >
+                        <User className="h-4 w-4 text-primary" />
+                        <span>Créer un compte</span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="relative">
+              <button
+                onClick={() => handleDropdownToggle("language")}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary hover:shadow-md"
+                aria-label="Changer de langue"
               >
-                <DropdownMenuItem className="cursor-pointer rounded-lg">Français</DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer rounded-lg">English</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                <Globe className="h-4 w-4" />
+                <span className="hidden md:inline">FR</span>
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-300 ${activeDropdown === "language" ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              {activeDropdown === "language" && (
+                <div className="absolute top-full right-0 mt-2 w-32 rounded-xl bg-background/90 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300">
+                  <div className="p-2">
+                    <button className="w-full text-left p-2 rounded-lg hover:bg-primary/5 transition-all duration-300">
+                      Français
+                    </button>
+                    <button className="w-full text-left p-2 rounded-lg hover:bg-primary/5 transition-all duration-300">
+                      English
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
 
             <ThemeToggle />
 
             <Button
               size="sm"
-              className="hidden md:inline-flex rounded-full bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+              className="hidden md:inline-flex rounded-xl bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
             >
-              <Sparkles className="mr-1 h-3 w-3" />
+              <Phone className="mr-2 h-4 w-4" />
               Contact
             </Button>
 
             <button
-              className="md:hidden p-1.5 rounded-full hover:bg-white/10 transition-all duration-300"
+              className="lg:hidden p-2 rounded-xl hover:bg-white/10 transition-all duration-300"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             >
@@ -297,106 +352,52 @@ export function SiteHeader() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden mt-2 mx-4 rounded-2xl bg-background/70 backdrop-blur-lg shadow-lg border border-white/10 overflow-hidden animate-in slide-in-from-top-5 duration-300">
-          <div className="py-4 space-y-4 px-4">
-            <div className="space-y-2">
-              <div className="font-medium px-2">Candidats</div>
-              <nav className="flex flex-col space-y-1 pl-4">
+        <div className="lg:hidden mt-2 mx-2 rounded-2xl bg-background/80 backdrop-blur-xl shadow-2xl border border-white/20 overflow-hidden animate-in slide-in-from-top-5 duration-300">
+          <div className="py-6 space-y-6 px-6">
+            <div className="space-y-4">
+              <div className="font-bold text-lg bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Candidats
+              </div>
+              <nav className="flex flex-col space-y-2 pl-4">
                 <Link
                   href="/candidats"
-                  className="px-2 py-1.5 text-sm rounded-full hover:bg-white/10 transition-all duration-300"
+                  className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
+                  <Briefcase className="h-4 w-4 text-primary" />
                   Vue d'ensemble
                 </Link>
                 <Link
                   href="/candidats/emplois"
-                  className="px-2 py-1.5 text-sm rounded-full hover:bg-white/10 transition-all duration-300"
+                  className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
+                  <Search className="h-4 w-4 text-primary" />
                   Offres d'emploi
-                </Link>
-                <Link
-                  href="/candidats/faire-carriere"
-                  className="px-2 py-1.5 text-sm rounded-full hover:bg-white/10 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Faire carrière avec R+
-                </Link>
-                <Link
-                  href="/candidats/impulsion"
-                  className="px-2 py-1.5 text-sm rounded-full hover:bg-white/10 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Programme Impulsion
                 </Link>
               </nav>
             </div>
 
-            <div className="space-y-2">
-              <div className="font-medium px-2">Employeurs</div>
-              <nav className="flex flex-col space-y-1 pl-4">
+            <div className="space-y-4">
+              <div className="font-bold text-lg bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Employeurs
+              </div>
+              <nav className="flex flex-col space-y-2 pl-4">
                 <Link
                   href="/employeurs"
-                  className="px-2 py-1.5 text-sm rounded-full hover:bg-white/10 transition-all duration-300"
+                  className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
+                  <Building2 className="h-4 w-4 text-primary" />
                   Vue d'ensemble
                 </Link>
                 <Link
                   href="/employeurs/industries"
-                  className="px-2 py-1.5 text-sm rounded-full hover:bg-white/10 transition-all duration-300"
+                  className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
+                  <Users className="h-4 w-4 text-primary" />
                   Industries desservies
-                </Link>
-                <Link
-                  href="/employeurs/publier-offre"
-                  className="px-2 py-1.5 text-sm rounded-full hover:bg-white/10 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Publier une offre
-                </Link>
-                <Link
-                  href="/employeurs/solutions"
-                  className="px-2 py-1.5 text-sm rounded-full hover:bg-white/10 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Solutions de recrutement
-                </Link>
-              </nav>
-            </div>
-
-            <div className="space-y-2">
-              <div className="font-medium px-2">Services</div>
-              <nav className="flex flex-col space-y-1 pl-4">
-                <Link
-                  href="/services"
-                  className="px-2 py-1.5 text-sm rounded-full hover:bg-white/10 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Tous nos services
-                </Link>
-                <Link
-                  href="/services/recrutement-local"
-                  className="px-2 py-1.5 text-sm rounded-full hover:bg-white/10 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Recrutement Local
-                </Link>
-                <Link
-                  href="/services/recrutement-national"
-                  className="px-2 py-1.5 text-sm rounded-full hover:bg-white/10 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Recrutement National
-                </Link>
-                <Link
-                  href="/services/recrutement-international"
-                  className="px-2 py-1.5 text-sm rounded-full hover:bg-white/10 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Recrutement International
                 </Link>
               </nav>
             </div>
@@ -404,39 +405,44 @@ export function SiteHeader() {
             <div className="space-y-2">
               <Link
                 href="/a-propos"
-                className="block px-2 py-1.5 font-medium rounded-full hover:bg-white/10 transition-all duration-300"
+                className="flex items-center gap-3 px-3 py-2 font-medium rounded-xl hover:bg-primary/5 transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                À Propos
+                <Users className="h-4 w-4 text-primary" />À Propos
               </Link>
               <Link
-                href="/blog"
-                className="block px-2 py-1.5 font-medium rounded-full hover:bg-white/10 transition-all duration-300"
+                href="/services"
+                className="flex items-center gap-3 px-3 py-2 font-medium rounded-xl hover:bg-primary/5 transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Blog
+                <Briefcase className="h-4 w-4 text-primary" />
+                Services
               </Link>
               <Link
                 href="/login"
-                className="block px-2 py-1.5 font-medium rounded-full hover:bg-white/10 transition-all duration-300"
+                className="flex items-center gap-3 px-3 py-2 font-medium rounded-xl hover:bg-primary/5 transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
+                <LogIn className="h-4 w-4 text-primary" />
                 Se connecter
               </Link>
             </div>
 
-            <div className="pt-2 border-t border-white/10">
+            <div className="pt-4 border-t border-white/10">
               <Button
-                className="w-full rounded-full bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+                className="w-full rounded-xl bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <Sparkles className="mr-1 h-3 w-3" />
+                <Phone className="mr-2 h-4 w-4" />
                 Contact
               </Button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Overlay to close dropdowns */}
+      {activeDropdown && <div className="fixed inset-0 z-40" onClick={() => setActiveDropdown(null)} />}
     </header>
   )
 }
