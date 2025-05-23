@@ -103,7 +103,7 @@ export function SiteHeader() {
                 </button>
 
                 {activeDropdown === "candidats" && (
-                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-50">
+                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]">
                     <div className="p-6">
                       <div className="mb-4">
                         <h3 className="font-bold text-lg mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -116,6 +116,7 @@ export function SiteHeader() {
                           href="/candidats"
                           className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
                           onClick={closeDropdown}
+                          style={{ pointerEvents: "auto" }}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Briefcase className="h-4 w-4 text-primary" />
@@ -129,6 +130,7 @@ export function SiteHeader() {
                           href="/candidats/emplois"
                           className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
                           onClick={closeDropdown}
+                          style={{ pointerEvents: "auto" }}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Search className="h-4 w-4 text-primary" />
@@ -142,6 +144,7 @@ export function SiteHeader() {
                           href="/candidats/faire-carriere"
                           className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
                           onClick={closeDropdown}
+                          style={{ pointerEvents: "auto" }}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Sparkles className="h-4 w-4 text-primary" />
@@ -175,7 +178,7 @@ export function SiteHeader() {
                 </button>
 
                 {activeDropdown === "employeurs" && (
-                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-50">
+                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]">
                     <div className="p-6">
                       <div className="mb-4">
                         <h3 className="font-bold text-lg mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -188,6 +191,7 @@ export function SiteHeader() {
                           href="/employeurs"
                           className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
                           onClick={closeDropdown}
+                          style={{ pointerEvents: "auto" }}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Building2 className="h-4 w-4 text-primary" />
@@ -201,6 +205,7 @@ export function SiteHeader() {
                           href="/employeurs/industries"
                           className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
                           onClick={closeDropdown}
+                          style={{ pointerEvents: "auto" }}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Users className="h-4 w-4 text-primary" />
@@ -214,6 +219,7 @@ export function SiteHeader() {
                           href="/employeurs/publier-offre"
                           className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
                           onClick={closeDropdown}
+                          style={{ pointerEvents: "auto" }}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Sparkles className="h-4 w-4 text-primary" />
@@ -281,13 +287,14 @@ export function SiteHeader() {
               </button>
 
               {activeDropdown === "account" && (
-                <div className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-50">
+                <div className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]">
                   <div className="p-4">
                     <div className="space-y-2">
                       <Link
                         href="/login"
                         className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
                         onClick={closeDropdown}
+                        style={{ pointerEvents: "auto" }}
                       >
                         <LogIn className="h-4 w-4 text-primary" />
                         <span>Se connecter</span>
@@ -296,6 +303,7 @@ export function SiteHeader() {
                         href="/register"
                         className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
                         onClick={closeDropdown}
+                        style={{ pointerEvents: "auto" }}
                       >
                         <User className="h-4 w-4 text-primary" />
                         <span>Créer un compte</span>
@@ -320,7 +328,7 @@ export function SiteHeader() {
               </button>
 
               {activeDropdown === "language" && (
-                <div className="absolute top-full right-0 mt-2 w-32 rounded-xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-50">
+                <div className="absolute top-full right-0 mt-2 w-32 rounded-xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]">
                   <div className="p-2">
                     <button
                       className="w-full text-left p-2 rounded-lg hover:bg-primary/5 transition-all duration-300 cursor-pointer"
@@ -452,7 +460,7 @@ export function SiteHeader() {
       )}
 
       {/* Overlay to close dropdowns */}
-      {activeDropdown && <div className="fixed inset-0 z-40" onClick={closeDropdown} />}
+      {activeDropdown && <div className="fixed inset-0 z-30" onClick={closeDropdown} />}
     </header>
   )
 }
