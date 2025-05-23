@@ -48,6 +48,10 @@ export function SiteHeader() {
     setActiveDropdown(activeDropdown === dropdown ? null : dropdown)
   }
 
+  const closeDropdown = () => {
+    setActiveDropdown(null)
+  }
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-2 md:px-4">
       <div
@@ -99,7 +103,7 @@ export function SiteHeader() {
                 </button>
 
                 {activeDropdown === "candidats" && (
-                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/90 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300">
+                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-50">
                     <div className="p-6">
                       <div className="mb-4">
                         <h3 className="font-bold text-lg mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -110,8 +114,8 @@ export function SiteHeader() {
                       <div className="space-y-3">
                         <Link
                           href="/candidats"
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
-                          onClick={() => setActiveDropdown(null)}
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
+                          onClick={closeDropdown}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Briefcase className="h-4 w-4 text-primary" />
@@ -123,8 +127,8 @@ export function SiteHeader() {
                         </Link>
                         <Link
                           href="/candidats/emplois"
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
-                          onClick={() => setActiveDropdown(null)}
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
+                          onClick={closeDropdown}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Search className="h-4 w-4 text-primary" />
@@ -136,8 +140,8 @@ export function SiteHeader() {
                         </Link>
                         <Link
                           href="/candidats/faire-carriere"
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
-                          onClick={() => setActiveDropdown(null)}
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
+                          onClick={closeDropdown}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Sparkles className="h-4 w-4 text-primary" />
@@ -171,7 +175,7 @@ export function SiteHeader() {
                 </button>
 
                 {activeDropdown === "employeurs" && (
-                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/90 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300">
+                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-50">
                     <div className="p-6">
                       <div className="mb-4">
                         <h3 className="font-bold text-lg mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -182,8 +186,8 @@ export function SiteHeader() {
                       <div className="space-y-3">
                         <Link
                           href="/employeurs"
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
-                          onClick={() => setActiveDropdown(null)}
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
+                          onClick={closeDropdown}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Building2 className="h-4 w-4 text-primary" />
@@ -195,8 +199,8 @@ export function SiteHeader() {
                         </Link>
                         <Link
                           href="/employeurs/industries"
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
-                          onClick={() => setActiveDropdown(null)}
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
+                          onClick={closeDropdown}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Users className="h-4 w-4 text-primary" />
@@ -208,8 +212,8 @@ export function SiteHeader() {
                         </Link>
                         <Link
                           href="/employeurs/publier-offre"
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
-                          onClick={() => setActiveDropdown(null)}
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
+                          onClick={closeDropdown}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             <Sparkles className="h-4 w-4 text-primary" />
@@ -277,21 +281,21 @@ export function SiteHeader() {
               </button>
 
               {activeDropdown === "account" && (
-                <div className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-background/90 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300">
+                <div className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-50">
                   <div className="p-4">
                     <div className="space-y-2">
                       <Link
                         href="/login"
-                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
-                        onClick={() => setActiveDropdown(null)}
+                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
+                        onClick={closeDropdown}
                       >
                         <LogIn className="h-4 w-4 text-primary" />
                         <span>Se connecter</span>
                       </Link>
                       <Link
                         href="/register"
-                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group"
-                        onClick={() => setActiveDropdown(null)}
+                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
+                        onClick={closeDropdown}
                       >
                         <User className="h-4 w-4 text-primary" />
                         <span>Créer un compte</span>
@@ -316,12 +320,18 @@ export function SiteHeader() {
               </button>
 
               {activeDropdown === "language" && (
-                <div className="absolute top-full right-0 mt-2 w-32 rounded-xl bg-background/90 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300">
+                <div className="absolute top-full right-0 mt-2 w-32 rounded-xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-50">
                   <div className="p-2">
-                    <button className="w-full text-left p-2 rounded-lg hover:bg-primary/5 transition-all duration-300">
+                    <button
+                      className="w-full text-left p-2 rounded-lg hover:bg-primary/5 transition-all duration-300 cursor-pointer"
+                      onClick={closeDropdown}
+                    >
                       Français
                     </button>
-                    <button className="w-full text-left p-2 rounded-lg hover:bg-primary/5 transition-all duration-300">
+                    <button
+                      className="w-full text-left p-2 rounded-lg hover:bg-primary/5 transition-all duration-300 cursor-pointer"
+                      onClick={closeDropdown}
+                    >
                       English
                     </button>
                   </div>
@@ -442,7 +452,7 @@ export function SiteHeader() {
       )}
 
       {/* Overlay to close dropdowns */}
-      {activeDropdown && <div className="fixed inset-0 z-40" onClick={() => setActiveDropdown(null)} />}
+      {activeDropdown && <div className="fixed inset-0 z-40" onClick={closeDropdown} />}
     </header>
   )
 }
