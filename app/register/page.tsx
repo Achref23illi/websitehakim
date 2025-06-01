@@ -95,25 +95,25 @@ export default function RegisterPage() {
               <Label>{t('register.account_type')}</Label>
               <RadioGroup 
                 defaultValue="candidate" 
-                className="flex flex-wrap gap-4"
+                className="flex justify-center gap-4"
                 value={accountType}
                 onValueChange={setAccountType}
               >
-                <div className="flex items-center space-x-2 flex-1">
+                <div className="flex items-center space-x-2 w-[200px]">
                   <RadioGroupItem value="candidate" id="candidate" className="peer sr-only" />
                   <Label
                     htmlFor="candidate"
-                    className="flex flex-col items-center justify-between rounded-xl border-2 border-muted bg-background/50 backdrop-blur-sm p-5 hover:bg-primary/5 peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary [&:has([data-state=checked])]:bg-primary/10 cursor-pointer transition-all duration-200"
+                    className="flex flex-col items-center justify-between w-full rounded-xl border-2 border-muted bg-background/50 backdrop-blur-sm p-5 hover:bg-primary/5 peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary [&:has([data-state=checked])]:bg-primary/10 cursor-pointer transition-all duration-200"
                   >
                     <User className="mb-3 h-7 w-7 text-primary" />
                     <span className="text-sm font-medium">{t('register.candidate')}</span>
                   </Label>
                 </div>
-                <div className="flex items-center space-x-2 flex-1">
+                <div className="flex items-center space-x-2 w-[200px]">
                   <RadioGroupItem value="employer" id="employer" className="peer sr-only" />
                   <Label
                     htmlFor="employer"
-                    className="flex flex-col items-center justify-between rounded-xl border-2 border-muted bg-background/50 backdrop-blur-sm p-5 hover:bg-primary/5 peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary [&:has([data-state=checked])]:bg-primary/10 cursor-pointer transition-all duration-200"
+                    className="flex flex-col items-center justify-between w-full rounded-xl border-2 border-muted bg-background/50 backdrop-blur-sm p-5 hover:bg-primary/5 peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary [&:has([data-state=checked])]:bg-primary/10 cursor-pointer transition-all duration-200"
                   >
                     <Building2 className="mb-3 h-7 w-7 text-primary" />
                     <span className="text-sm font-medium">{t('register.employer')}</span>
