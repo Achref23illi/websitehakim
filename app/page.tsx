@@ -14,7 +14,7 @@ export default function Home() {
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
         {/* Hero Section with Gradient Background */}
-        <section className="relative py-20 md:py-32 overflow-hidden">
+        <section className="relative py-28 md:py-44 overflow-hidden">
           {/* Background with gradient and pattern */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background/80 to-secondary/20 z-0">
             <div
