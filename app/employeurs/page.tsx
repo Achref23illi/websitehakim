@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
 import {
@@ -14,8 +16,10 @@ import {
   Zap,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 export default function EmployeursPage() {
+  const { t } = useLanguage();
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
@@ -43,29 +47,28 @@ export default function EmployeursPage() {
               <div className="space-y-8">
                 <div className="inline-block mb-6 px-6 py-2 bg-secondary/10 backdrop-blur-sm rounded-full text-secondary font-medium text-sm shimmer">
                   <Building2 className="inline-block h-4 w-4 mr-2" />
-                  Solutions RH innovantes
+                  {t('employers.hero.badge')}
                 </div>
                 <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-                  Solutions de recrutement{" "}
+                  {t('employers.hero.title')}{" "}
                   <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                    sur mesure
+                    {t('employers.hero.subtitle')}
                   </span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed">
-                  Des actions ciblées pour vos besoins en recrutement et développement RH. Trouvez les talents qui
-                  feront la différence dans votre organisation.
+                  {t('employers.hero.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button size="lg" className="magic-button">
                     <Users className="mr-2 h-5 w-5" />
-                    Publier une offre
+                    {t('employers.hero.post_job_button')}
                   </Button>
                   <Button
                     variant="outline"
                     size="lg"
                     className="rounded-xl border-white/20 backdrop-blur-sm hover:bg-white/10"
                   >
-                    Nos services
+                    {t('employers.hero.services_button')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
@@ -92,44 +95,47 @@ export default function EmployeursPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 backdrop-blur-sm rounded-full text-secondary font-medium text-sm shimmer">
                 <Globe className="inline-block h-4 w-4 mr-2" />
-                Secteurs d'expertise
+                {t('employers.industries.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                Industries que nous desservons
+                {t('employers.industries.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Notre expertise couvre un large éventail de secteurs d'activité pour répondre à tous vos besoins en
-                recrutement.
+                {t('employers.industries.description')}
               </p>
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {[
-                { name: "Technologie", color: "from-blue-500/20 to-blue-600/20" },
-                { name: "Santé", color: "from-green-500/20 to-green-600/20" },
-                { name: "Finance", color: "from-yellow-500/20 to-yellow-600/20" },
-                { name: "Ingénierie", color: "from-purple-500/20 to-purple-600/20" },
-                { name: "Manufacture", color: "from-red-500/20 to-red-600/20" },
-                { name: "Construction", color: "from-orange-500/20 to-orange-600/20" },
-                { name: "Éducation", color: "from-indigo-500/20 to-indigo-600/20" },
-                { name: "Hôtellerie", color: "from-pink-500/20 to-pink-600/20" },
-              ].map((industry, index) => (
+              {t('employers.industries.industries').map((industry, index) => {
+                const colors = [
+                  "from-blue-500/20 to-blue-600/20",
+                  "from-green-500/20 to-green-600/20",
+                  "from-yellow-500/20 to-yellow-600/20",
+                  "from-purple-500/20 to-purple-600/20",
+                  "from-red-500/20 to-red-600/20",
+                  "from-orange-500/20 to-orange-600/20",
+                  "from-indigo-500/20 to-indigo-600/20",
+                  "from-pink-500/20 to-pink-600/20"
+                ];
+                const color = colors[index % colors.length];
+                return (
                 <div key={index} className="magic-card group overflow-hidden">
-                  <div className={`h-48 bg-gradient-to-br ${industry.color} relative`}>
+                  <div className={`h-48 bg-gradient-to-br ${color} relative`}>
                     <Image
                       src="/placeholder.svg?height=300&width=400"
-                      alt={industry.name}
+                      alt={industry}
                       width={400}
                       height={300}
                       className="h-full w-full object-cover opacity-60 transition-transform group-hover:scale-105 duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/0 z-10"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
-                      <h3 className="font-bold text-white text-lg">{industry.name}</h3>
+                      <h3 className="font-bold text-white text-lg">{industry}</h3>
                     </div>
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
           </div>
         </section>
@@ -141,13 +147,13 @@ export default function EmployeursPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 backdrop-blur-sm rounded-full text-secondary font-medium text-sm shimmer">
                 <Zap className="inline-block h-4 w-4 mr-2" />
-                Nos Solutions
+                {t('employers.solutions.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                Solutions de recrutement
+                {t('employers.solutions.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Des approches personnalisées pour chaque type de besoin en recrutement.
+                {t('employers.solutions.description')}
               </p>
             </div>
 
@@ -158,24 +164,23 @@ export default function EmployeursPage() {
                   <div className="w-full h-48 rounded-xl overflow-hidden mb-4">
                     <Image
                       src="/placeholder.svg?height=300&width=500"
-                      alt="Recrutement Local"
+                      alt={t('employers.solutions.service_types.local.title')}
                       width={500}
                       height={300}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
                   <div className="absolute top-4 left-4 px-3 py-1 bg-primary/90 text-white text-xs font-medium rounded-full">
-                    Local
+                    {t('employers.solutions.service_types.local.badge')}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">Recrutement Local</h3>
+                <h3 className="text-xl font-bold mb-3">{t('employers.solutions.service_types.local.title')}</h3>
                 <p className="text-muted-foreground mb-6">
-                  Candidats disponibles rapidement avec une analyse des besoins en personnel et une présélection
-                  rigoureuse.
+                  {t('employers.solutions.service_types.local.description')}
                 </p>
                 <ul className="space-y-3 mb-6">
-                  {["Analyse des besoins", "Présélection rigoureuse", "Suivi post-placement"].map((item) => (
-                    <li key={item} className="flex items-start gap-2">
+                  {t('employers.solutions.service_types.local.features').map((item, index) => (
+                    <li key={index} className="flex items-start gap-2">
                       <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                       <span className="text-sm">{item}</span>
                     </li>
@@ -186,7 +191,7 @@ export default function EmployeursPage() {
                   className="inline-flex items-center text-sm font-medium text-primary group"
                 >
                   <span className="relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-primary after:origin-bottom-right after:scale-x-0 group-hover:after:scale-x-100 after:transition-transform after:duration-300">
-                    En savoir plus
+                    {t('employers.solutions.learn_more')}
                   </span>
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
@@ -198,23 +203,23 @@ export default function EmployeursPage() {
                   <div className="w-full h-48 rounded-xl overflow-hidden mb-4">
                     <Image
                       src="/placeholder.svg?height=300&width=500"
-                      alt="Recrutement National"
+                      alt={t('employers.solutions.service_types.national.title')}
                       width={500}
                       height={300}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
                   <div className="absolute top-4 left-4 px-3 py-1 bg-secondary/90 text-white text-xs font-medium rounded-full">
-                    National
+                    {t('employers.solutions.service_types.national.badge')}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">Recrutement National</h3>
+                <h3 className="text-xl font-bold mb-3">{t('employers.solutions.service_types.national.title')}</h3>
                 <p className="text-muted-foreground mb-6">
-                  Recherche à travers le Canada avec coordination des démarches de relocalisation.
+                  {t('employers.solutions.service_types.national.description')}
                 </p>
                 <ul className="space-y-3 mb-6">
-                  {["Recherche ciblée", "Coordination de relocalisation", "Soutien à l'intégration"].map((item) => (
-                    <li key={item} className="flex items-start gap-2">
+                  {t('employers.solutions.service_types.national.features').map((item, index) => (
+                    <li key={index} className="flex items-start gap-2">
                       <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                       <span className="text-sm">{item}</span>
                     </li>
@@ -225,7 +230,7 @@ export default function EmployeursPage() {
                   className="inline-flex items-center text-sm font-medium text-primary group"
                 >
                   <span className="relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-primary after:origin-bottom-right after:scale-x-0 group-hover:after:scale-x-100 after:transition-transform after:duration-300">
-                    En savoir plus
+                    {t('employers.solutions.learn_more')}
                   </span>
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
@@ -237,37 +242,34 @@ export default function EmployeursPage() {
                   <div className="w-full h-48 rounded-xl overflow-hidden mb-4">
                     <Image
                       src="/placeholder.svg?height=300&width=500"
-                      alt="Recrutement International"
+                      alt={t('employers.solutions.service_types.international.title')}
                       width={500}
                       height={300}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
                   <div className="absolute top-4 left-4 px-3 py-1 bg-gradient-to-r from-primary to-secondary text-white text-xs font-medium rounded-full">
-                    International
+                    {t('employers.solutions.service_types.international.badge')}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">Recrutement International</h3>
+                <h3 className="text-xl font-bold mb-3">{t('employers.solutions.service_types.international.title')}</h3>
                 <p className="text-muted-foreground mb-6">
-                  Spécialistes du recrutement de travailleurs étrangers qualifiés avec préparation et montage du dossier
-                  d'EIMT.
+                  {t('employers.solutions.service_types.international.description')}
                 </p>
                 <ul className="space-y-3 mb-6">
-                  {["Préparation dossier EIMT", "Suivi du processus de permis", "Accompagnement à l'intégration"].map(
-                    (item) => (
-                      <li key={item} className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                        <span className="text-sm">{item}</span>
-                      </li>
-                    ),
-                  )}
+                  {t('employers.solutions.service_types.international.features').map((item, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                      <span className="text-sm">{item}</span>
+                    </li>
+                  ))}
                 </ul>
                 <Link
                   href="/employeurs/recrutement-international"
                   className="inline-flex items-center text-sm font-medium text-primary group"
                 >
                   <span className="relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-primary after:origin-bottom-right after:scale-x-0 group-hover:after:scale-x-100 after:transition-transform after:duration-300">
-                    En savoir plus
+                    {t('employers.solutions.learn_more')}
                   </span>
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
@@ -283,109 +285,68 @@ export default function EmployeursPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 backdrop-blur-sm rounded-full text-secondary font-medium text-sm shimmer">
                 <Target className="inline-block h-4 w-4 mr-2" />
-                Notre Processus
+                {t('employers.process.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                Notre processus employeur
+                {t('employers.process.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Un processus structuré et efficace pour vous garantir les meilleurs résultats.
+                {t('employers.process.description')}
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-3 lg:grid-cols-5">
-              {[
-                {
-                  step: "1",
-                  title: "Définition des Besoins",
-                  description: "Analyse des besoins en main-d'œuvre spécialisée.",
-                  icon: Target,
-                },
-                {
-                  step: "2",
-                  title: "Diffusion des Offres",
-                  description: "Transmission aux partenaires et intégration au réseau.",
-                  icon: Globe,
-                },
-                {
-                  step: "3",
-                  title: "Analyse Préliminaire",
-                  description: "Authentification des documents et validation des compétences.",
-                  icon: Users,
-                },
-                {
-                  step: "4",
-                  title: "Sélection Finale",
-                  description: "Collecte des documents et demande de permis de travail.",
-                  icon: Award,
-                },
-                {
-                  step: "5",
-                  title: "Intégration",
-                  description: "Préparation à l'arrivée et suivi de l'intégration.",
-                  icon: TrendingUp,
-                },
-              ].map((item, index) => (
+              {t('employers.process.steps').map((step, index) => {
+                const icons = [Target, Globe, Users, Award, TrendingUp];
+                const IconComponent = icons[index % icons.length];
+                return (
                 <div key={index} className="magic-card p-6 text-center group">
                   <div className="mx-auto h-16 w-16 rounded-2xl bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-2xl font-bold text-secondary">{item.step}</span>
+                    <span className="text-2xl font-bold text-secondary">{step.step}</span>
                   </div>
                   <div className="mb-4 text-secondary">
-                    <item.icon className="h-8 w-8 mx-auto" />
+                    <IconComponent className="h-8 w-8 mx-auto" />
                   </div>
-                  <h3 className="text-lg font-bold mb-3">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                  <h3 className="text-lg font-bold mb-3">{step.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
                 </div>
-              ))}
+              );
+              })}
             </div>
           </div>
         </section>
 
-        {/* Services Complémentaires */}
+        {/* Additional Services */}
         <section className="py-16 md:py-24 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/30 to-transparent"></div>
           <div className="container relative">
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 backdrop-blur-sm rounded-full text-secondary font-medium text-sm shimmer">
                 <Sparkles className="inline-block h-4 w-4 mr-2" />
-                Services Complémentaires
+                {t('employers.additional_services.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                Services complémentaires
+                {t('employers.additional_services.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Des services additionnels pour optimiser votre stratégie RH et développer votre marque employeur.
+                {t('employers.additional_services.description')}
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {[
-                {
-                  title: "Développement de la marque employeur",
-                  description:
-                    "Stratégies pour renforcer votre image et attirer les meilleurs talents dans votre secteur.",
-                  icon: Building2,
-                },
-                {
-                  title: "Gestion des talents",
-                  description:
-                    "Programmes de rétention et développement des compétences pour maximiser le potentiel de vos équipes.",
-                  icon: Users,
-                },
-                {
-                  title: "Planification stratégique",
-                  description: "Analyse et planification des besoins en main-d'œuvre à court, moyen et long terme.",
-                  icon: Target,
-                },
-              ].map((service, index) => (
+              {t('employers.additional_services.services').map((service, index) => {
+                const icons = [Building2, Users, Target];
+                const IconComponent = icons[index % icons.length];
+                return (
                 <div key={index} className="magic-card p-8 group">
                   <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <service.icon className="h-6 w-6 text-secondary" />
+                    <IconComponent className="h-6 w-6 text-secondary" />
                   </div>
                   <h3 className="text-xl font-bold mb-4">{service.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{service.description}</p>
                 </div>
-              ))}
+              );
+              })}
             </div>
           </div>
         </section>
@@ -397,33 +358,18 @@ export default function EmployeursPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 backdrop-blur-sm rounded-full text-secondary font-medium text-sm shimmer">
                 <Star className="inline-block h-4 w-4 mr-2" />
-                Témoignages
+                {t('employers.testimonials.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                Ce que disent nos clients
+                {t('employers.testimonials.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Découvrez les expériences de nos partenaires employeurs qui nous font confiance.
+                {t('employers.testimonials.description')}
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2">
-              {[
-                {
-                  name: "Jean Dupont",
-                  role: "Directeur RH, TechCorp",
-                  content:
-                    "Nous collaborons avec Recruitment Plus depuis 3 ans et leur expertise nous a permis de constituer une équipe solide et performante. Leur processus de recrutement international a été particulièrement efficace.",
-                  rating: 5,
-                },
-                {
-                  name: "Marie Tremblay",
-                  role: "PDG, Santé Plus",
-                  content:
-                    "Face à la pénurie de personnel dans le secteur de la santé, Recruitment Plus nous a fourni des solutions innovantes et efficaces. Leur accompagnement a été précieux pour notre croissance.",
-                  rating: 5,
-                },
-              ].map((testimonial, index) => (
+              {t('employers.testimonials.testimonials').map((testimonial, index) => (
                 <div key={index} className="magic-card p-8 relative">
                   <div className="absolute top-0 right-0 w-20 h-20 bg-secondary/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                   <div className="flex items-center gap-4 mb-6 relative">
@@ -460,10 +406,9 @@ export default function EmployeursPage() {
                 />
 
                 <div className="text-center relative p-8 md:p-12">
-                  <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">Prêt à trouver vos talents?</h2>
+                  <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">{t('employers.cta.title')}</h2>
                   <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                    Que vous ayez besoin d'un recrutement ponctuel ou d'une stratégie à long terme, notre équipe est là
-                    pour vous accompagner vers le succès.
+                    {t('employers.cta.description')}
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center gap-4">
                     <Button
@@ -472,14 +417,14 @@ export default function EmployeursPage() {
                       className="rounded-xl bg-white/90 text-secondary hover:bg-white transition-all duration-300"
                     >
                       <Users className="mr-2 h-5 w-5" />
-                      Publier une offre
+                      {t('employers.cta.post_job_button')}
                     </Button>
                     <Button
                       variant="outline"
                       size="lg"
                       className="rounded-xl bg-transparent text-white border-white/30 hover:bg-white/10 transition-all duration-300"
                     >
-                      Contactez-nous
+                      {t('employers.cta.contact_button')}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </div>

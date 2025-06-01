@@ -1,9 +1,13 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
 import { MapPin, Phone, Mail, Sparkles, Users, Award, Target, Heart, Shield, Zap, Globe } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 export default function AProposPage() {
+  const { t } = useLanguage();
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
@@ -31,21 +35,19 @@ export default function AProposPage() {
               <div className="space-y-8">
                 <div className="inline-block mb-6 px-6 py-2 bg-primary/10 backdrop-blur-sm rounded-full text-primary font-medium text-sm shimmer">
                   <Heart className="inline-block h-4 w-4 mr-2" />
-                  Notre histoire
+                  {t('about.hero.badge')}
                 </div>
                 <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-                  À propos de{" "}
                   <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    Recruitment Plus
+                    {t('about.hero.title')}
                   </span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed">
-                  Recruitment Plus Inc. aide les employeurs canadiens à combler la pénurie de main-d'œuvre avec une
-                  approche personnalisée, humaine et simple qui fait la différence.
+                  {t('about.hero.description')}
                 </p>
                 <Button size="lg" className="magic-button">
                   <Phone className="mr-2 h-5 w-5" />
-                  Contactez-nous
+                  {t('about.hero.contact_button')}
                 </Button>
               </div>
               <div className="relative">
@@ -70,15 +72,13 @@ export default function AProposPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-primary/10 backdrop-blur-sm rounded-full text-primary font-medium text-sm shimmer">
                 <Target className="inline-block h-4 w-4 mr-2" />
-                Notre Mission
+                {t('about.mission.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Connecter les talents aux opportunités
+                {t('about.mission.title')}
               </h2>
               <p className="text-xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
-                Connecter les talents aux meilleures opportunités professionnelles, aider les candidats à trouver un
-                emploi passionnant et aider les employeurs à recruter la personne idéale avec un service transparent,
-                efficace et humain.
+                {t('about.mission.description')}
               </p>
             </div>
 
@@ -86,20 +86,20 @@ export default function AProposPage() {
               {[
                 {
                   icon: Users,
-                  title: "Connecter",
-                  description: "Mettre en relation les talents et les opportunités professionnelles.",
+                  title: t('about.mission.values.0.title'),
+                  description: t('about.mission.values.0.description'),
                   color: "from-blue-500/20 to-blue-600/20",
                 },
                 {
                   icon: Shield,
-                  title: "Confiance",
-                  description: "Bâtir des relations durables fondées sur la confiance et le respect.",
+                  title: t('about.mission.values.1.title'),
+                  description: t('about.mission.values.1.description'),
                   color: "from-green-500/20 to-green-600/20",
                 },
                 {
                   icon: Award,
-                  title: "Résultats",
-                  description: "Fournir un service transparent, efficace et axé sur les résultats.",
+                  title: t('about.mission.values.2.title'),
+                  description: t('about.mission.values.2.description'),
                   color: "from-purple-500/20 to-purple-600/20",
                 },
               ].map((value, index) => (
@@ -125,7 +125,7 @@ export default function AProposPage() {
               <div className="relative order-2 lg:order-1">
                 <div className="magic-card p-2 overflow-hidden">
                   <Image
-                    src="/placeholder.svg?height=400&width=600"
+                    src="/images/business-meeting-office-recuiteers.jpg"
                     alt="Notre équipe au travail"
                     width={600}
                     height={400}
@@ -136,32 +136,30 @@ export default function AProposPage() {
               <div className="space-y-8 order-1 lg:order-2">
                 <div className="inline-block px-4 py-1.5 bg-secondary/10 backdrop-blur-sm rounded-full text-secondary font-medium text-sm shimmer">
                   <Sparkles className="inline-block h-4 w-4 mr-2" />
-                  Nos Avantages
+                  {t('about.why_choose.badge')}
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight sm:text-4xl bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                  Pourquoi nous choisir
+                  {t('about.why_choose.title')}
                 </h2>
                 <p className="text-xl text-muted-foreground leading-relaxed">
-                  Notre approche humaine, personnalisée et axée sur les résultats nous distingue. Nous offrons un
-                  accompagnement complet, une sélection rigoureuse des candidats et une compréhension profonde des
-                  besoins de nos clients.
+                  {t('about.why_choose.description')}
                 </p>
                 <ul className="space-y-6">
                   {[
                     {
                       icon: Award,
-                      title: "Expertise Reconnue",
-                      description: "Années d'expérience et connaissance approfondie du marché.",
+                      title: t('about.why_choose.advantages.0.title'),
+                      description: t('about.why_choose.advantages.0.description'),
                     },
                     {
                       icon: Heart,
-                      title: "Service Personnalisé",
-                      description: "Solutions sur mesure pour des résultats durables.",
+                      title: t('about.why_choose.advantages.1.title'),
+                      description: t('about.why_choose.advantages.1.description'),
                     },
                     {
                       icon: Globe,
-                      title: "Portée Mondiale",
-                      description: "Recrutement international des meilleurs talents.",
+                      title: t('about.why_choose.advantages.2.title'),
+                      description: t('about.why_choose.advantages.2.description'),
                     },
                   ].map((advantage, index) => (
                     <li key={index} className="flex items-start gap-4">
@@ -187,22 +185,38 @@ export default function AProposPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-primary/10 backdrop-blur-sm rounded-full text-primary font-medium text-sm shimmer">
                 <Users className="inline-block h-4 w-4 mr-2" />
-                Notre Équipe
+                {t('about.team.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Rencontrez notre équipe
+                {t('about.team.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Des professionnels passionnés et expérimentés dédiés à votre succès.
+                {t('about.team.description')}
               </p>
             </div>
 
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { name: "Marie Tremblay", role: "Directrice Générale", initial: "M" },
-                { name: "Jean Dupont", role: "Directeur du Recrutement", initial: "J" },
-                { name: "Sophie Martin", role: "Responsable International", initial: "S" },
-                { name: "Pierre Lavoie", role: "Conseiller RH Senior", initial: "P" },
+                { 
+                  name: t('about.team.members.0.name'), 
+                  role: t('about.team.members.0.role'), 
+                  initial: t('about.team.members.0.initial')
+                },
+                { 
+                  name: t('about.team.members.1.name'), 
+                  role: t('about.team.members.1.role'), 
+                  initial: t('about.team.members.1.initial')
+                },
+                { 
+                  name: t('about.team.members.2.name'), 
+                  role: t('about.team.members.2.role'), 
+                  initial: t('about.team.members.2.initial')
+                },
+                { 
+                  name: t('about.team.members.3.name'), 
+                  role: t('about.team.members.3.role'), 
+                  initial: t('about.team.members.3.initial')
+                },
               ].map((member, index) => (
                 <div key={index} className="magic-card p-6 text-center group">
                   <div className="relative h-32 w-32 mx-auto mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
@@ -258,20 +272,36 @@ export default function AProposPage() {
             <div className="text-center mb-12">
               <div className="inline-block mb-4 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white font-medium text-sm">
                 <Zap className="inline-block h-4 w-4 mr-2" />
-                Nos Résultats
+                {t('about.stats.badge')}
               </div>
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">Nos chiffres parlent d'eux-mêmes</h2>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">{t('about.stats.title')}</h2>
               <p className="text-xl opacity-90 max-w-2xl mx-auto">
-                Des résultats concrets qui témoignent de notre expertise et de notre engagement.
+                {t('about.stats.description')}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
               {[
-                { number: "500+", label: "Entreprises servies", icon: "🏢" },
-                { number: "5000+", label: "Placements réussis", icon: "✅" },
-                { number: "15+", label: "Années d'expérience", icon: "📅" },
-                { number: "98%", label: "Taux de satisfaction", icon: "⭐" },
+                { 
+                  number: t('about.stats.stats.0.number'), 
+                  label: t('about.stats.stats.0.label'), 
+                  icon: t('about.stats.stats.0.icon')
+                },
+                { 
+                  number: t('about.stats.stats.1.number'), 
+                  label: t('about.stats.stats.1.label'), 
+                  icon: t('about.stats.stats.1.icon')
+                },
+                { 
+                  number: t('about.stats.stats.2.number'), 
+                  label: t('about.stats.stats.2.label'), 
+                  icon: t('about.stats.stats.2.icon')
+                },
+                { 
+                  number: t('about.stats.stats.3.number'), 
+                  label: t('about.stats.stats.3.label'), 
+                  icon: t('about.stats.stats.3.icon')
+                },
               ].map((stat, index) => (
                 <div
                   key={index}
@@ -300,35 +330,35 @@ export default function AProposPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 backdrop-blur-sm rounded-full text-secondary font-medium text-sm shimmer">
                 <MapPin className="inline-block h-4 w-4 mr-2" />
-                Nos Bureaux
+                {t('about.locations.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                Nos succursales
+                {t('about.locations.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Présents dans les principales villes du Canada pour mieux vous servir.
+                {t('about.locations.description')}
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {[
                 {
-                  city: "Montréal (Siège social)",
-                  address: "123 Rue Principale, Montréal, QC H3Z 2Y7",
-                  phone: "+1 (514) 123-4567",
-                  email: "montreal@recruitmentplus.ca",
+                  city: t('about.locations.locations.0.city'),
+                  address: t('about.locations.locations.0.address'),
+                  phone: t('about.locations.locations.0.phone'),
+                  email: t('about.locations.locations.0.email'),
                 },
                 {
-                  city: "Québec",
-                  address: "456 Boulevard des Forges, Québec, QC G1K 7P4",
-                  phone: "+1 (418) 987-6543",
-                  email: "quebec@recruitmentplus.ca",
+                  city: t('about.locations.locations.1.city'),
+                  address: t('about.locations.locations.1.address'),
+                  phone: t('about.locations.locations.1.phone'),
+                  email: t('about.locations.locations.1.email'),
                 },
                 {
-                  city: "Toronto",
-                  address: "789 Bay Street, Toronto, ON M5G 2N8",
-                  phone: "+1 (416) 555-7890",
-                  email: "toronto@recruitmentplus.ca",
+                  city: t('about.locations.locations.2.city'),
+                  address: t('about.locations.locations.2.address'),
+                  phone: t('about.locations.locations.2.phone'),
+                  email: t('about.locations.locations.2.email'),
                 },
               ].map((location, index) => (
                 <div key={index} className="magic-card p-8 group">
@@ -349,7 +379,7 @@ export default function AProposPage() {
                   </ul>
                   <div className="mt-6">
                     <Button variant="outline" size="sm" className="rounded-xl">
-                      Voir sur la carte
+                      {t('about.locations.view_map')}
                     </Button>
                   </div>
                 </div>
@@ -371,16 +401,28 @@ export default function AProposPage() {
                 />
 
                 <div className="text-center relative p-8 md:p-12">
-                  <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">Discutons ensemble</h2>
+                  <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">{t('about.contact.title')}</h2>
                   <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                    Contactez notre équipe pour vos besoins spécifiques en recrutement et ressources humaines.
+                    {t('about.contact.description')}
                   </p>
 
                   <div className="grid gap-8 md:grid-cols-3 mb-8">
                     {[
-                      { icon: Phone, title: "Téléphone", info: "+1 (514) 123-4567" },
-                      { icon: Mail, title: "Email", info: "info@recruitmentplus.ca" },
-                      { icon: MapPin, title: "Adresse", info: "Montréal, Québec, Toronto" },
+                      { 
+                        icon: Phone, 
+                        title: t('about.contact.contacts.0.title'), 
+                        info: t('about.contact.contacts.0.info') 
+                      },
+                      { 
+                        icon: Mail, 
+                        title: t('about.contact.contacts.1.title'), 
+                        info: t('about.contact.contacts.1.info')
+                      },
+                      { 
+                        icon: MapPin, 
+                        title: t('about.contact.contacts.2.title'), 
+                        info: t('about.contact.contacts.2.info')
+                      },
                     ].map((contact, index) => (
                       <div key={index} className="flex flex-col items-center">
                         <div className="h-12 w-12 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center mb-4">
@@ -398,7 +440,7 @@ export default function AProposPage() {
                     className="rounded-xl bg-white/90 text-primary hover:bg-white transition-all duration-300"
                   >
                     <Phone className="mr-2 h-5 w-5" />
-                    Contactez-nous
+                    {t('about.contact.contact_button')}
                   </Button>
                 </div>
 

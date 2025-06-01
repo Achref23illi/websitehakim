@@ -3,12 +3,13 @@ import { MapPin, Briefcase, Clock } from "lucide-react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 interface JobCardProps {
   title: string
   company: string
   location: string
-  type: "Temps plein" | "Temps partiel" | "Contractuel" | "Temporaire"
+  type: "Temps plein" | "Temps partiel" | "Contractuel" | "Temporaire" | "Full-time" | "Part-time" | "Contract" | "Temporary"
   salary?: string
   tags?: string[]
   postedDate: string
@@ -16,6 +17,8 @@ interface JobCardProps {
 }
 
 export function JobCard({ title, company, location, type, salary, tags, postedDate, onApply }: JobCardProps) {
+  const { t } = useLanguage();
+  
   return (
     <Card className="hover:shadow-md transition-shadow">
       <CardContent className="pt-6">
@@ -48,7 +51,7 @@ export function JobCard({ title, company, location, type, salary, tags, postedDa
       </CardContent>
       <CardFooter>
         <Button onClick={onApply} className="w-full">
-          Postuler
+          {t('candidates.jobs.apply_button')}
         </Button>
       </CardFooter>
     </Card>

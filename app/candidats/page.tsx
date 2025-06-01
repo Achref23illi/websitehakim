@@ -1,10 +1,14 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
 import { Search, Sparkles, ArrowRight, CheckCircle, Star, TrendingUp, Users, Award, Target } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 export default function CandidatsPage() {
+  const { t } = useLanguage();
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
@@ -32,29 +36,27 @@ export default function CandidatsPage() {
               <div className="space-y-8">
                 <div className="inline-block mb-6 px-6 py-2 bg-primary/10 backdrop-blur-sm rounded-full text-primary font-medium text-sm shimmer">
                   <Sparkles className="inline-block h-4 w-4 mr-2" />
-                  Votre carrière commence ici
+                  {t('candidates.hero.badge')}
                 </div>
                 <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-                  Faites carrière avec{" "}
                   <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    Recruitment Plus
+                    {t('candidates.hero.title')}
                   </span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed">
-                  Explorez les opportunités et lancez votre avenir professionnel avec notre accompagnement personnalisé,
-                  humain et efficace.
+                  {t('candidates.hero.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button size="lg" className="magic-button">
                     <Search className="mr-2 h-5 w-5" />
-                    Trouver un emploi
+                    {t('candidates.hero.find_job_button')}
                   </Button>
                   <Button
                     variant="outline"
                     size="lg"
                     className="rounded-xl border-white/20 backdrop-blur-sm hover:bg-white/10"
                   >
-                    Nos services
+                    {t('candidates.hero.services_button')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
@@ -81,14 +83,13 @@ export default function CandidatsPage() {
             <div className="text-center mb-12">
               <div className="inline-block mb-4 px-4 py-1.5 bg-primary/10 backdrop-blur-sm rounded-full text-primary font-medium text-sm shimmer">
                 <Search className="inline-block h-4 w-4 mr-2" />
-                Recherche d'emploi
+                {t('candidates.job_search.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Trouvez votre prochain emploi
+                {t('candidates.job_search.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Découvrez des milliers d'opportunités qui correspondent à vos compétences et aspirations
-                professionnelles.
+                {t('candidates.job_search.description')}
               </p>
             </div>
 
@@ -99,7 +100,7 @@ export default function CandidatsPage() {
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
                       type="text"
-                      placeholder="Titre du poste, compétences ou mots-clés"
+                      placeholder={t('candidates.jobs.search_placeholder')}
                       className="magic-input pl-10"
                     />
                   </div>
@@ -119,15 +120,15 @@ export default function CandidatsPage() {
                       <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                       <circle cx="12" cy="10" r="3" />
                     </svg>
-                    <Input type="text" placeholder="Ville, province ou code postal" className="magic-input pl-10" />
+                    <Input type="text" placeholder={t('candidates.jobs.location_placeholder')} className="magic-input pl-10" />
                   </div>
                   <Button size="lg" className="magic-button w-full md:w-auto">
-                    RECHERCHER
+                    {t('candidates.job_search.search_button')}
                   </Button>
                 </div>
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <span className="text-sm font-medium text-muted-foreground">Recherches populaires:</span>
-                  {["Développeur", "Infirmier", "Comptable", "Ingénieur", "Marketing"].map((term) => (
+                  <span className="text-sm font-medium text-muted-foreground">{t('candidates.job_search.popular_searches')}</span>
+                  {t('candidates.job_search.popular_terms').map((term, index) => (
                     <Link
                       key={term}
                       href={`/candidats/emplois?q=${term.toLowerCase()}`}
@@ -149,13 +150,13 @@ export default function CandidatsPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-primary/10 backdrop-blur-sm rounded-full text-primary font-medium text-sm shimmer">
                 <Award className="inline-block h-4 w-4 mr-2" />
-                Nos Services
+                {t('candidates.services.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Nos services d'accompagnement
+                {t('candidates.services.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Des solutions personnalisées pour vous aider à atteindre vos objectifs professionnels.
+                {t('candidates.services.description')}
               </p>
             </div>
 
@@ -173,17 +174,17 @@ export default function CandidatsPage() {
                     />
                   </div>
                   <div className="absolute top-4 left-4 px-3 py-1 bg-primary/90 text-white text-xs font-medium rounded-full">
-                    Local
+                    {t('candidates.services.service_types.local.badge')}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">Recrutement Local</h3>
+                <h3 className="text-xl font-bold mb-3">{t('candidates.services.service_types.local.title')}</h3>
                 <p className="text-muted-foreground mb-6">
-                  Accompagnement personnalisé avec aide à la rédaction de CV et préparation aux entretiens.
+                  {t('candidates.services.service_types.local.description')}
                 </p>
                 <ul className="space-y-3 mb-6">
-                  {["Accompagnement personnalisé", "Aide à la rédaction de CV", "Préparation aux entretiens"].map(
-                    (item) => (
-                      <li key={item} className="flex items-start gap-2">
+                  {t('candidates.services.service_types.local.features').map(
+                    (item, index) => (
+                      <li key={index} className="flex items-start gap-2">
                         <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                         <span className="text-sm">{item}</span>
                       </li>
@@ -195,7 +196,7 @@ export default function CandidatsPage() {
                   className="inline-flex items-center text-sm font-medium text-primary group"
                 >
                   <span className="relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-primary after:origin-bottom-right after:scale-x-0 group-hover:after:scale-x-100 after:transition-transform after:duration-300">
-                    En savoir plus
+                    {t('candidates.services.learn_more')}
                   </span>
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
@@ -207,34 +208,36 @@ export default function CandidatsPage() {
                   <div className="w-full h-48 rounded-xl overflow-hidden mb-4">
                     <Image
                       src="/placeholder.svg?height=300&width=500"
-                      alt="Recrutement National"
+                      alt={t('candidates.services.service_types.national.title')}
                       width={500}
                       height={300}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
                   <div className="absolute top-4 left-4 px-3 py-1 bg-secondary/90 text-white text-xs font-medium rounded-full">
-                    National
+                    {t('candidates.services.service_types.national.badge')}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">Recrutement National</h3>
+                <h3 className="text-xl font-bold mb-3">{t('candidates.services.service_types.national.title')}</h3>
                 <p className="text-muted-foreground mb-6">
-                  Service adapté aux besoins professionnels avec couverture à travers tout le Canada.
+                  {t('candidates.services.service_types.national.description')}
                 </p>
                 <ul className="space-y-3 mb-6">
-                  {["Service adapté aux besoins", "Couverture nationale", "Mobilité interrégionale"].map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                      <span className="text-sm">{item}</span>
-                    </li>
-                  ))}
+                  {t('candidates.services.service_types.national.features').map(
+                    (item, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                        <span className="text-sm">{item}</span>
+                      </li>
+                    ),
+                  )}
                 </ul>
                 <Link
                   href="/candidats/recrutement-national"
                   className="inline-flex items-center text-sm font-medium text-primary group"
                 >
                   <span className="relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-primary after:origin-bottom-right after:scale-x-0 group-hover:after:scale-x-100 after:transition-transform after:duration-300">
-                    En savoir plus
+                    {t('candidates.services.learn_more')}
                   </span>
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
@@ -246,34 +249,36 @@ export default function CandidatsPage() {
                   <div className="w-full h-48 rounded-xl overflow-hidden mb-4">
                     <Image
                       src="/placeholder.svg?height=300&width=500"
-                      alt="Recrutement International"
+                      alt={t('candidates.services.service_types.international.title')}
                       width={500}
                       height={300}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
                   <div className="absolute top-4 left-4 px-3 py-1 bg-gradient-to-r from-primary to-secondary text-white text-xs font-medium rounded-full">
-                    International
+                    {t('candidates.services.service_types.international.badge')}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">Recrutement International</h3>
+                <h3 className="text-xl font-bold mb-3">{t('candidates.services.service_types.international.title')}</h3>
                 <p className="text-muted-foreground mb-6">
-                  Soutien aux démarches d'immigration et accompagnement à l'intégration au Canada.
+                  {t('candidates.services.service_types.international.description')}
                 </p>
                 <ul className="space-y-3 mb-6">
-                  {["Soutien aux démarches", "Accompagnement intégration", "Présélection rigoureuse"].map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                      <span className="text-sm">{item}</span>
-                    </li>
-                  ))}
+                  {t('candidates.services.service_types.international.features').map(
+                    (item, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                        <span className="text-sm">{item}</span>
+                      </li>
+                    ),
+                  )}
                 </ul>
                 <Link
                   href="/candidats/recrutement-international"
                   className="inline-flex items-center text-sm font-medium text-primary group"
                 >
                   <span className="relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-primary after:origin-bottom-right after:scale-x-0 group-hover:after:scale-x-100 after:transition-transform after:duration-300">
-                    En savoir plus
+                    {t('candidates.services.learn_more')}
                   </span>
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
@@ -289,61 +294,38 @@ export default function CandidatsPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-primary/10 backdrop-blur-sm rounded-full text-primary font-medium text-sm shimmer">
                 <Target className="inline-block h-4 w-4 mr-2" />
-                Notre Processus
+                {t('candidates.process.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Comment nous vous accompagnons
+                {t('candidates.process.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Un processus structuré et personnalisé pour maximiser vos chances de succès.
+                {t('candidates.process.description')}
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-              {[
-                {
-                  step: "1",
-                  title: "Évaluation et Présélection",
-                  description:
-                    "Validation des compétences, évaluation linguistique et vérification du parcours professionnel.",
-                  icon: Users,
-                },
-                {
-                  step: "2",
-                  title: "Placement",
-                  description:
-                    "Présentation des candidatures aux employeurs et préparation des documents pour le contrat de travail.",
-                  icon: TrendingUp,
-                },
-                {
-                  step: "3",
-                  title: "Préparation à l'Arrivée",
-                  description: "Logistique du transport et coordination de l'installation.",
-                  icon: Target,
-                },
-                {
-                  step: "4",
-                  title: "Accompagnement à l'Intégration",
-                  description: "Séance d'information sur l'entreprise et familiarisation avec l'environnement.",
-                  icon: Award,
-                },
-              ].map((item, index) => (
-                <div key={index} className="magic-card p-6 text-center group">
-                  <div className="mx-auto h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-2xl font-bold text-primary">{item.step}</span>
+              {t('candidates.process.steps').map((step, index) => {
+                const icons = [Users, TrendingUp, Target, Award];
+                const IconComponent = icons[index % icons.length];
+                return (
+                  <div key={index} className="magic-card p-6 text-center group">
+                    <div className="mx-auto h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-2xl font-bold text-primary">{step.step}</span>
+                    </div>
+                    <div className="mb-4 text-primary">
+                      <IconComponent className="h-8 w-8 mx-auto" />
+                    </div>
+                    <h3 className="text-lg font-bold mb-3">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
                   </div>
-                  <div className="mb-4 text-primary">
-                    <item.icon className="h-8 w-8 mx-auto" />
-                  </div>
-                  <h3 className="text-lg font-bold mb-3">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
 
-        {/* Impulsion Program */}
+        {/* Impulse Program */}
         <section className="py-16 md:py-24 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground relative overflow-hidden">
           <div
             className="absolute inset-0 opacity-10"
@@ -357,21 +339,15 @@ export default function CandidatsPage() {
               <div className="space-y-8">
                 <div className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white font-medium text-sm">
                   <Sparkles className="inline-block h-4 w-4 mr-2" />
-                  Programme Exclusif
+                  {t('candidates.impulse_program.badge')}
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Programme Impulsion</h2>
+                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t('candidates.impulse_program.title')}</h2>
                 <p className="text-xl leading-relaxed opacity-90">
-                  Notre programme de développement professionnel sur mesure conçu pour vous aider à atteindre vos
-                  objectifs de carrière avec un accompagnement personnalisé.
+                  {t('candidates.impulse_program.description')}
                 </p>
                 <ul className="space-y-4">
-                  {[
-                    "Coaching personnalisé avec des experts",
-                    "Ateliers de développement des compétences",
-                    "Mentorat par des professionnels expérimentés",
-                    "Réseau professionnel exclusif",
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-3">
+                  {t('candidates.impulse_program.features').map((item, index) => (
+                    <li key={index} className="flex items-start gap-3">
                       <CheckCircle className="h-6 w-6 shrink-0 mt-0.5" />
                       <span className="text-lg">{item}</span>
                     </li>
@@ -383,14 +359,14 @@ export default function CandidatsPage() {
                   className="rounded-xl bg-white/90 text-primary hover:bg-white transition-all duration-300"
                 >
                   <Sparkles className="mr-2 h-5 w-5" />
-                  Découvrir Impulsion
+                  {t('candidates.impulse_program.button')}
                 </Button>
               </div>
               <div className="relative">
                 <div className="magic-card p-2 bg-white/10 backdrop-blur-sm">
                   <Image
                     src="/placeholder.svg?height=400&width=600"
-                    alt="Programme Impulsion"
+                    alt={t('candidates.impulse_program.title')}
                     width={600}
                     height={400}
                     className="w-full h-[400px] object-cover rounded-xl"
@@ -415,40 +391,18 @@ export default function CandidatsPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-primary/10 backdrop-blur-sm rounded-full text-primary font-medium text-sm shimmer">
                 <Star className="inline-block h-4 w-4 mr-2" />
-                Témoignages
+                {t('candidates.testimonials.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Témoignages de candidats
+                {t('candidates.testimonials.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Découvrez les expériences de ceux qui ont fait confiance à Recruitment Plus pour leur carrière.
+                {t('candidates.testimonials.description')}
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {[
-                {
-                  name: "Marie Tremblay",
-                  role: "Développeuse Web",
-                  content:
-                    "Grâce à Recruitment Plus, j'ai trouvé un emploi qui correspond parfaitement à mes compétences et aspirations. Leur accompagnement a été précieux.",
-                  rating: 5,
-                },
-                {
-                  name: "Pierre Lavoie",
-                  role: "Ingénieur Civil",
-                  content:
-                    "Le processus de recrutement a été rapide et efficace. J'ai particulièrement apprécié la préparation aux entretiens qui m'a donné confiance.",
-                  rating: 5,
-                },
-                {
-                  name: "Sophie Martin",
-                  role: "Infirmière",
-                  content:
-                    "En tant que candidate internationale, le processus d'immigration était complexe, mais l'équipe de Recruitment Plus m'a guidée à chaque étape.",
-                  rating: 5,
-                },
-              ].map((testimonial, index) => (
+              {t('candidates.testimonials.testimonials').map((testimonial, index) => (
                 <div key={index} className="magic-card p-6 relative">
                   <div className="absolute top-0 right-0 w-20 h-20 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                   <div className="flex items-center gap-4 mb-4 relative">
@@ -485,10 +439,9 @@ export default function CandidatsPage() {
                 />
 
                 <div className="text-center relative p-8 md:p-12">
-                  <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">Prêt à lancer votre carrière?</h2>
+                  <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">{t('candidates.cta.title')}</h2>
                   <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                    Que vous soyez à la recherche de votre premier emploi ou d'un nouveau défi professionnel, notre
-                    équipe est là pour vous accompagner vers le succès.
+                    {t('candidates.cta.description')}
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center gap-4">
                     <Button
@@ -497,14 +450,14 @@ export default function CandidatsPage() {
                       className="rounded-xl bg-white/90 text-primary hover:bg-white transition-all duration-300"
                     >
                       <Search className="mr-2 h-5 w-5" />
-                      Trouver un emploi
+                      {t('candidates.cta.find_job_button')}
                     </Button>
                     <Button
                       variant="outline"
                       size="lg"
                       className="rounded-xl bg-transparent text-white border-white/30 hover:bg-white/10 transition-all duration-300"
                     >
-                      Contactez-nous
+                      {t('candidates.cta.contact_button')}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </div>

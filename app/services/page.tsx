@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import {
   Sparkles,
@@ -14,8 +16,10 @@ import {
   TrendingUp,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 export default function ServicesPage() {
+  const { t } = useLanguage();
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
@@ -42,21 +46,20 @@ export default function ServicesPage() {
             <div className="text-center max-w-4xl mx-auto">
               <div className="inline-block mb-6 px-6 py-2 bg-secondary/10 backdrop-blur-sm rounded-full text-secondary font-medium text-sm shimmer">
                 <Zap className="inline-block h-4 w-4 mr-2" />
-                Solutions complètes
+                {t('services.hero.badge')}
               </div>
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl mb-6">
-                Nos{" "}
+                {t('services.hero.title')}{" "}
                 <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                  Services
+                  {t('services.hero.title_highlight')}
                 </span>
               </h1>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Des solutions complètes de recrutement adaptées à vos besoins spécifiques, de la recherche locale au
-                placement international.
+                {t('services.hero.description')}
               </p>
               <Button size="lg" className="magic-button">
                 <Users className="mr-2 h-5 w-5" />
-                Contactez-nous
+                {t('services.hero.contact_button')}
               </Button>
             </div>
           </div>
@@ -69,78 +72,35 @@ export default function ServicesPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-primary/10 backdrop-blur-sm rounded-full text-primary font-medium text-sm shimmer">
                 <Target className="inline-block h-4 w-4 mr-2" />
-                Nos Expertises
+                {t('services.overview.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Solutions de recrutement complètes
+                {t('services.overview.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Découvrez notre gamme complète de services conçus pour répondre à tous vos besoins en recrutement.
+                {t('services.overview.description')}
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {[
-                {
-                  icon: Users,
-                  title: "Recrutement Permanent",
-                  description:
-                    "Placement d'employés permanents avec une collaboration étroite entre demandeurs et employeurs pour une adéquation parfaite des profils.",
-                  features: ["Évaluation approfondie", "Matching précis", "Suivi long terme"],
-                  color: "from-blue-500/20 to-blue-600/20",
-                  href: "/services/recrutement-permanent",
-                },
-                {
-                  icon: Clock,
-                  title: "Recrutement Temporaire",
-                  description:
-                    "Solution pour les besoins à court terme, couvrant les vacances, congés maladie et projets spéciaux avec flexibilité.",
-                  features: ["Réactivité rapide", "Flexibilité totale", "Gestion simplifiée"],
-                  color: "from-green-500/20 to-green-600/20",
-                  href: "/services/recrutement-temporaire",
-                },
-                {
-                  icon: Award,
-                  title: "Recherche de Cadres",
-                  description:
-                    "Services spécialisés pour les postes de direction avec une sélection rigoureuse des meilleurs candidats de haut niveau.",
-                  features: ["Approche confidentielle", "Réseau exclusif", "Évaluation experte"],
-                  color: "from-purple-500/20 to-purple-600/20",
-                  href: "/services/recherche-cadres",
-                },
-                {
-                  icon: Globe,
-                  title: "Recrutement International",
-                  description:
-                    "Agence reconnue par la CNESST avec assistance EIMT et un réseau mondial de recruteurs et partenaires.",
-                  features: ["Expertise EIMT", "Réseau mondial", "Support immigration"],
-                  color: "from-orange-500/20 to-orange-600/20",
-                  href: "/services/recrutement-international",
-                },
-                {
-                  icon: TrendingUp,
-                  title: "Recrutement Externalisé (RPO)",
-                  description:
-                    "Externalisation complète du processus de recrutement avec gestion de la recherche à l'intégration.",
-                  features: ["Processus complet", "Économies d'échelle", "Expertise dédiée"],
-                  color: "from-red-500/20 to-red-600/20",
-                  href: "/services/recrutement-externalise",
-                },
-                {
-                  icon: Search,
-                  title: "Stages",
-                  description:
-                    "Opportunités pour les étudiants avec une expérience professionnelle valorisante servant de tremplin pour une carrière réussie.",
-                  features: ["Programmes structurés", "Mentorat inclus", "Opportunités d'embauche"],
-                  color: "from-indigo-500/20 to-indigo-600/20",
-                  href: "/services/stages",
-                },
-              ].map((service, index) => (
+              {t('services.service_list').map((service, index) => {
+                const icons = [Users, Clock, Award, Globe, TrendingUp, Search];
+                const colors = [
+                  "from-blue-500/20 to-blue-600/20",
+                  "from-green-500/20 to-green-600/20",
+                  "from-purple-500/20 to-purple-600/20",
+                  "from-orange-500/20 to-orange-600/20",
+                  "from-red-500/20 to-red-600/20",
+                  "from-indigo-500/20 to-indigo-600/20"
+                ];
+                const IconComponent = icons[index % icons.length];
+                const color = colors[index % colors.length];
+                return (
                 <div key={index} className="magic-card p-8 group">
                   <div
-                    className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                    className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
                   >
-                    <service.icon className="h-8 w-8 text-primary" />
+                    <IconComponent className="h-8 w-8 text-primary" />
                   </div>
                   <h3 className="text-xl font-bold mb-4">{service.title}</h3>
                   <p className="text-muted-foreground mb-6 leading-relaxed">{service.description}</p>
@@ -154,12 +114,13 @@ export default function ServicesPage() {
                   </ul>
                   <Link href={service.href} className="inline-flex items-center text-sm font-medium text-primary group">
                     <span className="relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-primary after:origin-bottom-right after:scale-x-0 group-hover:after:scale-x-100 after:transition-transform after:duration-300">
-                      En savoir plus
+                      {t('services.more')}
                     </span>
                     <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </div>
-              ))}
+              );
+              })}
             </div>
           </div>
         </section>
@@ -171,47 +132,25 @@ export default function ServicesPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 backdrop-blur-sm rounded-full text-secondary font-medium text-sm shimmer">
                 <Target className="inline-block h-4 w-4 mr-2" />
-                Notre Approche
+                {t('services.approach.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                Comment nous travaillons
+                {t('services.approach.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Un processus éprouvé et structuré pour garantir les meilleurs résultats à chaque étape.
+                {t('services.approach.description')}
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-              {[
-                {
-                  step: "01",
-                  title: "Analyse des Besoins",
-                  description: "Compréhension approfondie de vos exigences et de votre culture d'entreprise.",
-                  icon: Search,
-                },
-                {
-                  step: "02",
-                  title: "Recherche Active",
-                  description: "Identification et approche des meilleurs candidats sur le marché.",
-                  icon: Users,
-                },
-                {
-                  step: "03",
-                  title: "Évaluation Rigoureuse",
-                  description: "Tests, entretiens et vérifications pour garantir la qualité des profils.",
-                  icon: Award,
-                },
-                {
-                  step: "04",
-                  title: "Accompagnement",
-                  description: "Suivi personnalisé jusqu'à l'intégration réussie du candidat.",
-                  icon: TrendingUp,
-                },
-              ].map((step, index) => (
+              {t('services.process_steps').map((step, index) => {
+                const icons = [Search, Users, Award, TrendingUp];
+                const IconComponent = icons[index % icons.length];
+                return (
                 <div key={index} className="magic-card p-6 text-center group">
                   <div className="relative mb-6">
                     <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
-                      <step.icon className="h-8 w-8 text-secondary" />
+                      <IconComponent className="h-8 w-8 text-secondary" />
                     </div>
                     <div className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
                       {step.step}
@@ -220,7 +159,8 @@ export default function ServicesPage() {
                   <h3 className="text-lg font-bold mb-3">{step.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
                 </div>
-              ))}
+              );
+              })}
             </div>
           </div>
         </section>
@@ -232,37 +172,41 @@ export default function ServicesPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-primary/10 backdrop-blur-sm rounded-full text-primary font-medium text-sm shimmer">
                 <Building2 className="inline-block h-4 w-4 mr-2" />
-                Secteurs d'Expertise
+                {t('services.industries.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Industries que nous servons
+                {t('services.industries.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                Notre expertise s'étend à de nombreux secteurs d'activité pour répondre à tous vos besoins.
+                {t('services.industries.description')}
               </p>
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {[
-                { name: "Technologie", emoji: "💻", color: "from-blue-500/20 to-blue-600/20" },
-                { name: "Santé", emoji: "🏥", color: "from-green-500/20 to-green-600/20" },
-                { name: "Finance", emoji: "💰", color: "from-yellow-500/20 to-yellow-600/20" },
-                { name: "Ingénierie", emoji: "⚙️", color: "from-purple-500/20 to-purple-600/20" },
-                { name: "Manufacture", emoji: "🏭", color: "from-red-500/20 to-red-600/20" },
-                { name: "Construction", emoji: "🏗️", color: "from-orange-500/20 to-orange-600/20" },
-                { name: "Éducation", emoji: "📚", color: "from-indigo-500/20 to-indigo-600/20" },
-                { name: "Hôtellerie", emoji: "🏨", color: "from-pink-500/20 to-pink-600/20" },
-                { name: "Transport", emoji: "🚛", color: "from-cyan-500/20 to-cyan-600/20" },
-              ].map((industry, index) => (
+              {t('services.industry_list').map((industry, index) => {
+                const colors = [
+                  "from-blue-500/20 to-blue-600/20",
+                  "from-green-500/20 to-green-600/20",
+                  "from-yellow-500/20 to-yellow-600/20",
+                  "from-purple-500/20 to-purple-600/20",
+                  "from-red-500/20 to-red-600/20",
+                  "from-orange-500/20 to-orange-600/20",
+                  "from-indigo-500/20 to-indigo-600/20",
+                  "from-pink-500/20 to-pink-600/20",
+                  "from-cyan-500/20 to-cyan-600/20"
+                ];
+                const color = colors[index % colors.length];
+                return (
                 <div key={index} className="magic-card p-6 text-center group">
                   <div
-                    className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${industry.color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
+                    className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
                   >
                     <span className="text-2xl">{industry.emoji}</span>
                   </div>
                   <h3 className="font-bold text-lg">{industry.name}</h3>
                 </div>
-              ))}
+              );
+              })}
             </div>
           </div>
         </section>
@@ -280,55 +224,28 @@ export default function ServicesPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white font-medium text-sm">
                 <Sparkles className="inline-block h-4 w-4 mr-2" />
-                Nos Avantages
+                {t('services.benefits.badge')}
               </div>
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">Pourquoi choisir nos services</h2>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">{t('services.benefits.title')}</h2>
               <p className="text-xl opacity-90 max-w-2xl mx-auto">
-                Des avantages concrets qui font la différence dans votre stratégie de recrutement.
+                {t('services.benefits.description')}
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {[
-                {
-                  icon: Zap,
-                  title: "Rapidité d'exécution",
-                  description: "Processus optimisés pour des résultats rapides sans compromis sur la qualité.",
-                },
-                {
-                  icon: Award,
-                  title: "Expertise reconnue",
-                  description: "15+ années d'expérience et une connaissance approfondie du marché canadien.",
-                },
-                {
-                  icon: Users,
-                  title: "Approche personnalisée",
-                  description: "Solutions sur mesure adaptées à votre culture d'entreprise et vos besoins spécifiques.",
-                },
-                {
-                  icon: Globe,
-                  title: "Réseau international",
-                  description: "Accès à un vaste réseau de talents locaux et internationaux qualifiés.",
-                },
-                {
-                  icon: Target,
-                  title: "Taux de réussite élevé",
-                  description: "98% de taux de satisfaction client et 95% de rétention des placements.",
-                },
-                {
-                  icon: Building2,
-                  title: "Support continu",
-                  description: "Accompagnement post-placement et suivi de l'intégration des candidats.",
-                },
-              ].map((benefit, index) => (
+              {t('services.benefit_list').map((benefit, index) => {
+                const icons = [Zap, Award, Users, Globe, Target, Building2];
+                const IconComponent = icons[index % icons.length];
+                return (
                 <div key={index} className="magic-card p-6 bg-white/10 backdrop-blur-sm group">
                   <div className="h-12 w-12 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <benefit.icon className="h-6 w-6" />
+                    <IconComponent className="h-6 w-6" />
                   </div>
                   <h3 className="font-bold text-lg mb-3">{benefit.title}</h3>
                   <p className="opacity-90 leading-relaxed">{benefit.description}</p>
                 </div>
-              ))}
+              );
+              })}
             </div>
           </div>
 
@@ -354,11 +271,10 @@ export default function ServicesPage() {
 
                 <div className="text-center relative p-8 md:p-12">
                   <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-                    Prêt à transformer votre recrutement?
+                    {t('services.cta.title')}
                   </h2>
                   <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                    Découvrez comment nos services peuvent vous aider à attirer, recruter et retenir les meilleurs
-                    talents pour votre organisation.
+                    {t('services.cta.description')}
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center gap-4">
                     <Button
@@ -367,14 +283,14 @@ export default function ServicesPage() {
                       className="rounded-xl bg-white/90 text-primary hover:bg-white transition-all duration-300"
                     >
                       <Users className="mr-2 h-5 w-5" />
-                      Demander une consultation
+                      {t('services.cta.consultation_button')}
                     </Button>
                     <Button
                       variant="outline"
                       size="lg"
                       className="rounded-xl bg-transparent text-white border-white/30 hover:bg-white/10 transition-all duration-300"
                     >
-                      Voir nos tarifs
+                      {t('services.cta.pricing_button')}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </div>

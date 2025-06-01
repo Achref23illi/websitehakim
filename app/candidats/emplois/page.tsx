@@ -1,42 +1,105 @@
 "use client"
 
+import { useContext } from "react"
+import { useLanguage } from "@/contexts/LanguageContext"
 import { JobCard } from "@/components/ui/job-card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, Filter } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 
+// Define the job type based on JobCardProps with support for both languages
+interface Job {
+  title: string;
+  company: string;
+  location: string;
+  type: "Temps plein" | "Temps partiel" | "Contractuel" | "Temporaire" | "Full-time" | "Part-time" | "Contract" | "Temporary";
+  salary: string;
+  tags: string[];
+  posted: string;
+}
+
 export default function EmploisPage() {
+  const { t } = useLanguage()
+  
   // Cette fonction serait normalement connectée à un vrai système de candidature
   const handleApply = () => {
     console.log("Candidature soumise")
   }
+
+  // Get the job examples from the translation and map them to the Job interface
+  const getJobExamples = (): Job[] => {
+    const jobExamplesData = t('candidates.jobs.job_examples');
+    if (Array.isArray(jobExamplesData)) {
+      return jobExamplesData.map((job: any) => ({
+        title: job.title,
+        company: job.company,
+        location: job.location,
+        type: job.type as "Temps plein" | "Temps partiel" | "Contractuel" | "Temporaire",
+        salary: job.salary,
+        tags: job.tags,
+        posted: job.posted
+      }));
+    }
+    return [];
+  };
+
+  // Get job examples
+  const jobExamples = getJobExamples();
 
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-primary/5 py-12">
-          <div className="container">
-            <h1 className="section-title text-center">Offres d'emploi</h1>
+        <section className="bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-16 relative overflow-hidden">
+          {/* Decorative elements */}
+          <div className="absolute top-1/4 left-10 w-64 h-64 bg-primary/10 rounded-full filter blur-3xl opacity-30 floating-element"></div>
+          <div
+            className="absolute bottom-1/4 right-10 w-64 h-64 bg-secondary/10 rounded-full filter blur-3xl opacity-30 floating-element"
+            style={{ animationDelay: "-3s" }}
+          ></div>
+          
+          <div className="container relative z-10">
+            <div className="inline-block mb-4 px-4 py-1.5 bg-primary/10 backdrop-blur-sm rounded-full text-primary font-medium text-sm shimmer mx-auto">
+              <Search className="inline-block h-4 w-4 mr-2" />
+              {t('candidates.jobs.badge')}
+            </div>
+            
+            <h1 className="text-3xl md:text-4xl font-bold text-center mb-4">
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                {t('candidates.jobs.title')}
+              </span>
+            </h1>
+            
             <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Découvrez les opportunités professionnelles qui correspondent à vos compétences et aspirations.
+              {t('candidates.jobs.subtitle')}
             </p>
 
             {/* Search Bar */}
-            <div className="max-w-4xl mx-auto bg-background rounded-lg shadow-md p-4">
+            <div className="max-w-4xl mx-auto bg-background/80 backdrop-blur-md rounded-xl shadow-xl border border-white/20 p-6">
               <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto]">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input type="text" placeholder="Titre du poste, compétences ou mots-clés" className="pl-10" />
+                  <Input 
+                    type="text" 
+                    placeholder={t('candidates.jobs.search_placeholder')} 
+                    className="pl-10 bg-background/50 backdrop-blur-sm border-white/20 focus:border-primary/50" 
+                  />
                 </div>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input type="text" placeholder="Ville, province ou code postal" className="pl-10" />
+                  <Input 
+                    type="text" 
+                    placeholder={t('candidates.jobs.location_placeholder')} 
+                    className="pl-10 bg-background/50 backdrop-blur-sm border-white/20 focus:border-primary/50" 
+                  />
                 </div>
-                <Button size="lg" className="w-full md:w-auto">
-                  RECHERCHER
+                <Button 
+                  size="lg" 
+                  className="w-full md:w-auto bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 text-white"
+                >
+                  {t('candidates.jobs.search_button')}
                 </Button>
               </div>
             </div>
@@ -46,176 +109,219 @@ export default function EmploisPage() {
         {/* Job Listings */}
         <section className="py-16">
           <div className="container">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8">
               {/* Filters Sidebar */}
-              <div className="bg-background p-6 rounded-lg border h-fit">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold">Filtres</h3>
-                  <Filter className="h-5 w-5" />
+              <div className="bg-background/80 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-lg h-fit sticky top-24">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-bold flex items-center">
+                    <Filter className="h-5 w-5 mr-2 text-primary" />
+                    {t('candidates.jobs.filters')}
+                  </h3>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-8">
                   {/* Type d'emploi */}
                   <div>
-                    <h4 className="font-medium mb-2">Type d'emploi</h4>
-                    <div className="space-y-2">
+                    <h4 className="font-medium mb-3 text-primary">{t('candidates.jobs.job_types.title')}</h4>
+                    <div className="space-y-3">
                       <div className="flex items-center">
-                        <input type="checkbox" id="fulltime" className="mr-2" />
-                        <label htmlFor="fulltime">Temps plein</label>
+                        <input 
+                          type="checkbox" 
+                          id="fulltime" 
+                          className="w-4 h-4 rounded border-white/20 text-primary focus:ring-primary/25 mr-3" 
+                        />
+                        <label htmlFor="fulltime" className="text-sm">{t('candidates.jobs.job_types.full_time')}</label>
                       </div>
                       <div className="flex items-center">
-                        <input type="checkbox" id="parttime" className="mr-2" />
-                        <label htmlFor="parttime">Temps partiel</label>
+                        <input 
+                          type="checkbox" 
+                          id="parttime" 
+                          className="w-4 h-4 rounded border-white/20 text-primary focus:ring-primary/25 mr-3" 
+                        />
+                        <label htmlFor="parttime" className="text-sm">{t('candidates.jobs.job_types.part_time')}</label>
                       </div>
                       <div className="flex items-center">
-                        <input type="checkbox" id="contract" className="mr-2" />
-                        <label htmlFor="contract">Contractuel</label>
+                        <input 
+                          type="checkbox" 
+                          id="contract" 
+                          className="w-4 h-4 rounded border-white/20 text-primary focus:ring-primary/25 mr-3" 
+                        />
+                        <label htmlFor="contract" className="text-sm">{t('candidates.jobs.job_types.contract')}</label>
                       </div>
                       <div className="flex items-center">
-                        <input type="checkbox" id="temporary" className="mr-2" />
-                        <label htmlFor="temporary">Temporaire</label>
+                        <input 
+                          type="checkbox" 
+                          id="temporary" 
+                          className="w-4 h-4 rounded border-white/20 text-primary focus:ring-primary/25 mr-3" 
+                        />
+                        <label htmlFor="temporary" className="text-sm">{t('candidates.jobs.job_types.temporary')}</label>
                       </div>
                     </div>
                   </div>
 
                   {/* Expérience */}
                   <div>
-                    <h4 className="font-medium mb-2">Expérience</h4>
-                    <div className="space-y-2">
+                    <h4 className="font-medium mb-3 text-primary">{t('candidates.jobs.experience.title')}</h4>
+                    <div className="space-y-3">
                       <div className="flex items-center">
-                        <input type="checkbox" id="entry" className="mr-2" />
-                        <label htmlFor="entry">Débutant</label>
+                        <input 
+                          type="checkbox" 
+                          id="entry" 
+                          className="w-4 h-4 rounded border-white/20 text-primary focus:ring-primary/25 mr-3" 
+                        />
+                        <label htmlFor="entry" className="text-sm">{t('candidates.jobs.experience.entry')}</label>
                       </div>
                       <div className="flex items-center">
-                        <input type="checkbox" id="mid" className="mr-2" />
-                        <label htmlFor="mid">Intermédiaire</label>
+                        <input 
+                          type="checkbox" 
+                          id="mid" 
+                          className="w-4 h-4 rounded border-white/20 text-primary focus:ring-primary/25 mr-3" 
+                        />
+                        <label htmlFor="mid" className="text-sm">{t('candidates.jobs.experience.mid')}</label>
                       </div>
                       <div className="flex items-center">
-                        <input type="checkbox" id="senior" className="mr-2" />
-                        <label htmlFor="senior">Senior</label>
+                        <input 
+                          type="checkbox" 
+                          id="senior" 
+                          className="w-4 h-4 rounded border-white/20 text-primary focus:ring-primary/25 mr-3" 
+                        />
+                        <label htmlFor="senior" className="text-sm">{t('candidates.jobs.experience.senior')}</label>
                       </div>
                     </div>
                   </div>
 
                   {/* Salaire */}
                   <div>
-                    <h4 className="font-medium mb-2">Salaire annuel</h4>
-                    <div className="space-y-2">
+                    <h4 className="font-medium mb-3 text-primary">{t('candidates.jobs.salary.title')}</h4>
+                    <div className="space-y-3">
                       <div className="flex items-center">
-                        <input type="checkbox" id="salary1" className="mr-2" />
-                        <label htmlFor="salary1">Moins de 40 000 $</label>
+                        <input 
+                          type="checkbox" 
+                          id="salary1" 
+                          className="w-4 h-4 rounded border-white/20 text-primary focus:ring-primary/25 mr-3" 
+                        />
+                        <label htmlFor="salary1" className="text-sm">{t('candidates.jobs.salary.range1')}</label>
                       </div>
                       <div className="flex items-center">
-                        <input type="checkbox" id="salary2" className="mr-2" />
-                        <label htmlFor="salary2">40 000 $ - 60 000 $</label>
+                        <input 
+                          type="checkbox" 
+                          id="salary2" 
+                          className="w-4 h-4 rounded border-white/20 text-primary focus:ring-primary/25 mr-3" 
+                        />
+                        <label htmlFor="salary2" className="text-sm">{t('candidates.jobs.salary.range2')}</label>
                       </div>
                       <div className="flex items-center">
-                        <input type="checkbox" id="salary3" className="mr-2" />
-                        <label htmlFor="salary3">60 000 $ - 80 000 $</label>
+                        <input 
+                          type="checkbox" 
+                          id="salary3" 
+                          className="w-4 h-4 rounded border-white/20 text-primary focus:ring-primary/25 mr-3" 
+                        />
+                        <label htmlFor="salary3" className="text-sm">{t('candidates.jobs.salary.range3')}</label>
                       </div>
                       <div className="flex items-center">
-                        <input type="checkbox" id="salary4" className="mr-2" />
-                        <label htmlFor="salary4">Plus de 80 000 $</label>
+                        <input 
+                          type="checkbox" 
+                          id="salary4" 
+                          className="w-4 h-4 rounded border-white/20 text-primary focus:ring-primary/25 mr-3" 
+                        />
+                        <label htmlFor="salary4" className="text-sm">{t('candidates.jobs.salary.range4')}</label>
                       </div>
                     </div>
                   </div>
 
-                  <Button className="w-full">Appliquer les filtres</Button>
+                  <Button 
+                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 text-white font-medium"
+                  >
+                    {t('candidates.jobs.apply_filters')}
+                  </Button>
                 </div>
               </div>
 
               {/* Job Listings */}
               <div>
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold">128 offres d'emploi trouvées</h2>
-                  <div className="flex items-center">
-                    <span className="mr-2 text-sm">Trier par:</span>
-                    <select className="text-sm border rounded p-1">
-                      <option>Plus récent</option>
-                      <option>Pertinence</option>
-                      <option>Salaire</option>
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+                  <h2 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    {t('candidates.jobs.found_jobs', { count: 128 })}
+                  </h2>
+                  <div className="flex items-center bg-background/70 backdrop-blur-sm rounded-lg border border-white/20 shadow-sm px-4 py-2">
+                    <span className="mr-3 text-sm font-medium">{t('candidates.jobs.sort_by')}</span>
+                    <select className="text-sm bg-transparent border-none focus:ring-0 focus:outline-none">
+                      <option>{t('candidates.jobs.sort_options.recent')}</option>
+                      <option>{t('candidates.jobs.sort_options.relevance')}</option>
+                      <option>{t('candidates.jobs.sort_options.salary')}</option>
                     </select>
                   </div>
                 </div>
 
                 <div className="space-y-6">
-                  <JobCard
-                    title="Développeur Full Stack"
-                    company="TechCorp Inc."
-                    location="Montréal, QC"
-                    type="Temps plein"
-                    salary="75 000 $ - 95 000 $ par année"
-                    tags={["React", "Node.js", "TypeScript", "MongoDB"]}
-                    postedDate="Il y a 2 jours"
-                    onApply={handleApply}
-                  />
-
-                  <JobCard
-                    title="Infirmier(ère) clinique"
-                    company="Centre Médical Saint-Laurent"
-                    location="Québec, QC"
-                    type="Temps plein"
-                    salary="70 000 $ - 85 000 $ par année"
-                    tags={["Soins intensifs", "Expérience 3+ ans", "Bilingue"]}
-                    postedDate="Il y a 3 jours"
-                    onApply={handleApply}
-                  />
-
-                  <JobCard
-                    title="Comptable Senior"
-                    company="Groupe Financier National"
-                    location="Laval, QC"
-                    type="Temps plein"
-                    salary="65 000 $ - 80 000 $ par année"
-                    tags={["CPA", "Fiscalité", "États financiers"]}
-                    postedDate="Il y a 1 semaine"
-                    onApply={handleApply}
-                  />
-
-                  <JobCard
-                    title="Ingénieur Civil"
-                    company="Constructions Modernes Inc."
-                    location="Montréal, QC"
-                    type="Contractuel"
-                    salary="45 $ - 60 $ de l'heure"
-                    tags={["Génie civil", "AutoCAD", "Gestion de projet"]}
-                    postedDate="Il y a 5 jours"
-                    onApply={handleApply}
-                  />
-
-                  <JobCard
-                    title="Représentant des ventes"
-                    company="Solutions Industrielles"
-                    location="Trois-Rivières, QC"
-                    type="Temps plein"
-                    salary="Base + Commission"
-                    tags={["B2B", "Développement d'affaires", "Bilingue"]}
-                    postedDate="Il y a 1 jour"
-                    onApply={handleApply}
-                  />
+                  {jobExamples.map((job: Job, index: number) => (
+                    <div key={index} className="bg-background/70 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/20 overflow-hidden">
+                      <JobCard
+                        title={job.title}
+                        company={job.company}
+                        location={job.location}
+                        type={job.type}
+                        salary={job.salary}
+                        tags={job.tags}
+                        postedDate={job.posted}
+                        onApply={handleApply}
+                      />
+                    </div>
+                  ))}
                 </div>
 
                 {/* Pagination */}
-                <div className="flex justify-center mt-8">
-                  <div className="flex items-center space-x-2">
-                    <Button variant="outline" size="sm" disabled>
-                      Précédent
+                <div className="flex justify-center mt-12">
+                  <div className="flex items-center space-x-3 bg-background/70 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-2">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      disabled
+                      className="rounded-lg text-muted-foreground"
+                    >
+                      {t('common.previous')}
                     </Button>
-                    <Button variant="outline" size="sm" className="bg-primary text-primary-foreground">
+                    
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="rounded-lg bg-primary/20 text-primary font-medium hover:bg-primary/30"
+                    >
                       1
                     </Button>
-                    <Button variant="outline" size="sm">
+                    
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="rounded-lg hover:bg-primary/10"
+                    >
                       2
                     </Button>
-                    <Button variant="outline" size="sm">
+                    
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="rounded-lg hover:bg-primary/10"
+                    >
                       3
                     </Button>
-                    <span>...</span>
-                    <Button variant="outline" size="sm">
+                    
+                    <span className="text-muted-foreground">...</span>
+                    
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="rounded-lg hover:bg-primary/10"
+                    >
                       10
                     </Button>
-                    <Button variant="outline" size="sm">
-                      Suivant
+                    
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="rounded-lg text-primary hover:bg-primary/10"
+                    >
+                      {t('common.next')}
                     </Button>
                   </div>
                 </div>

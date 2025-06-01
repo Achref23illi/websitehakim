@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   Search,
   Globe,
@@ -18,14 +18,76 @@ import {
   Building2,
   Phone,
 } from "lucide-react"
-import { Button } from "@/components/ui/button" // Assuming this path is correct
-import { ThemeToggle } from "@/components/theme-toggle" // Assuming this path is correct
+import { useLanguage } from "@/contexts/LanguageContext"
+import { LanguageSwitcher } from "./LanguageSwitcher"
+import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
+import React from "react"
+
+// Define dropdown item types
+type DropdownItem = {
+  href: string
+  icon: React.ReactNode
+  title: string
+  description: string
+}
 
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const pathname = usePathname()
+  const router = useRouter()
+  const { t } = useLanguage()
+  
+  // Refs for dropdowns
+  const candidatsRef = useRef<HTMLDivElement>(null)
+  const employeursRef = useRef<HTMLDivElement>(null)
+  const accountRef = useRef<HTMLDivElement>(null)
+  const languageRef = useRef<HTMLDivElement>(null)
+
+  // Define dropdown content
+  const candidatsDropdown: DropdownItem[] = [
+    {
+      href: "/candidats",
+      icon: <Briefcase className="h-4 w-4 text-primary" />,
+      title: "Vue d'ensemble",
+      description: "Découvrez nos services",
+    },
+    {
+      href: "/candidats/emplois",
+      icon: <Search className="h-4 w-4 text-primary" />,
+      title: "Offres d'emploi",
+      description: "Trouvez votre emploi idéal",
+    },
+    // {
+    //   href: "/candidats/faire-carriere",
+    //   icon: <Sparkles className="h-4 w-4 text-primary" />,
+    //   title: "Faire carrière avec R+",
+    //   description: "Accompagnement personnalisé",
+    // },
+  ]
+
+  const employeursDropdown: DropdownItem[] = [
+    {
+      href: "/employeurs",
+      icon: <Building2 className="h-4 w-4 text-primary" />,
+      title: "Vue d'ensemble",
+      description: "Nos solutions RH",
+    },
+    // {
+    //   href: "/employeurs/industries",
+    //   icon: <Users className="h-4 w-4 text-primary" />,
+    //   title: "Industries desservies",
+    //   description: "Secteurs d'expertise",
+    // },
+    {
+      href: "/employeurs/publier-offre",
+      icon: <Sparkles className="h-4 w-4 text-primary" />,
+      title: "Publier une offre",
+      description: "Trouvez vos talents",
+    },
+  ]
 
   // Handle scroll effect for header background
   useEffect(() => {
@@ -45,31 +107,69 @@ export function SiteHeader() {
   }
 
   // Toggle dropdown visibility
-  const handleDropdownToggle = (dropdown: string) => {
-    setActiveDropdown(activeDropdown === dropdown ? null : dropdown)
+  const toggleDropdown = (dropdown: string) => {
+    if (activeDropdown === dropdown) {
+      setActiveDropdown(null)
+    } else {
+      setActiveDropdown(dropdown)
+    }
   }
 
-  // Close any active dropdown
-  const closeDropdown = () => {
-    setActiveDropdown(null)
-  }
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        activeDropdown === "candidats" &&
+        candidatsRef.current &&
+        !candidatsRef.current.contains(e.target as Node)
+      ) {
+        setActiveDropdown(null)
+      } else if (
+        activeDropdown === "employeurs" &&
+        employeursRef.current &&
+        !employeursRef.current.contains(e.target as Node)
+      ) {
+        setActiveDropdown(null)
+      } else if (
+        activeDropdown === "account" &&
+        accountRef.current &&
+        !accountRef.current.contains(e.target as Node)
+      ) {
+        setActiveDropdown(null)
+      } else if (
+        activeDropdown === "language" &&
+        languageRef.current &&
+        !languageRef.current.contains(e.target as Node)
+      ) {
+        setActiveDropdown(null)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [activeDropdown])
 
   // Close dropdown on route change
   useEffect(() => {
     if (activeDropdown) {
-      closeDropdown();
+      setActiveDropdown(null)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
   // Close mobile menu on route change
   useEffect(() => {
     if (isMobileMenuOpen) {
-        setIsMobileMenuOpen(false);
+      setIsMobileMenuOpen(false)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
+  // Handle dropdown item click
+  const handleDropdownItemClick = (href: string) => {
+    setActiveDropdown(null)
+    router.push(href)
+  }
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-2 md:px-4">
@@ -85,10 +185,10 @@ export function SiteHeader() {
       >
         <div className="flex h-16 items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center transition-opacity hover:opacity-90" onClick={closeDropdown}>
+            <Link href="/" className="flex items-center transition-opacity hover:opacity-90">
               <div className="relative">
                 <Image
-                  src="/images/rp-logo-1.png" // Ensure this path is correct
+                  src="/images/rp-logo-1.png"
                   alt="Recruitment Plus Logo"
                   width={160}
                   height={36}
@@ -105,12 +205,9 @@ export function SiteHeader() {
 
             <nav className="hidden lg:flex gap-2">
               {/* Candidats Dropdown */}
-              <div className="relative">
+              <div className="relative" ref={candidatsRef}>
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDropdownToggle("candidats");
-                  }}
+                  onClick={() => toggleDropdown("candidats")}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                     isActive("/candidats") || activeDropdown === "candidats"
                       ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
@@ -118,17 +215,14 @@ export function SiteHeader() {
                   }`}
                 >
                   <Users className="h-4 w-4" />
-                  Candidats
+                  {t('navigation.candidates')}
                   <ChevronDown
                     className={`h-4 w-4 transition-transform duration-300 ${activeDropdown === "candidats" ? "rotate-180" : ""}`}
                   />
                 </button>
 
                 {activeDropdown === "candidats" && (
-                  <div
-                    onClick={(e) => e.stopPropagation()}
-                    className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]"
-                  >
+                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden z-50">
                     <div className="p-6">
                       <div className="mb-4">
                         <h3 className="font-bold text-lg mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -137,45 +231,21 @@ export function SiteHeader() {
                         <p className="text-sm text-muted-foreground">Explorez vos opportunités de carrière</p>
                       </div>
                       <div className="space-y-3">
-                        <Link
-                          href="/candidats"
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
-                          onClick={closeDropdown}
-                        >
-                          <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                            <Briefcase className="h-4 w-4 text-primary" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Vue d'ensemble</div>
-                            <div className="text-xs text-muted-foreground">Découvrez nos services</div>
-                          </div>
-                        </Link>
-                        <Link
-                          href="/candidats/emplois"
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
-                          onClick={closeDropdown}
-                        >
-                          <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                            <Search className="h-4 w-4 text-primary" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Offres d'emploi</div>
-                            <div className="text-xs text-muted-foreground">Trouvez votre emploi idéal</div>
-                          </div>
-                        </Link>
-                        <Link
-                          href="/candidats/faire-carriere"
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
-                          onClick={closeDropdown}
-                        >
-                          <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                            <Sparkles className="h-4 w-4 text-primary" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Faire carrière avec R+</div>
-                            <div className="text-xs text-muted-foreground">Accompagnement personnalisé</div>
-                          </div>
-                        </Link>
+                        {candidatsDropdown.map((item, index) => (
+                          <button
+                            key={index}
+                            onClick={() => handleDropdownItemClick(item.href)}
+                            className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer text-left"
+                          >
+                            <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                              {item.icon}
+                            </div>
+                            <div>
+                              <div className="font-medium">{item.title}</div>
+                              <div className="text-xs text-muted-foreground">{item.description}</div>
+                            </div>
+                          </button>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -183,12 +253,9 @@ export function SiteHeader() {
               </div>
 
               {/* Employeurs Dropdown */}
-              <div className="relative">
+              <div className="relative" ref={employeursRef}>
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDropdownToggle("employeurs");
-                  }}
+                  onClick={() => toggleDropdown("employeurs")}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                     isActive("/employeurs") || activeDropdown === "employeurs"
                       ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
@@ -196,17 +263,14 @@ export function SiteHeader() {
                   }`}
                 >
                   <Building2 className="h-4 w-4" />
-                  Employeurs
+                  {t('navigation.employers')}
                   <ChevronDown
                     className={`h-4 w-4 transition-transform duration-300 ${activeDropdown === "employeurs" ? "rotate-180" : ""}`}
                   />
                 </button>
 
                 {activeDropdown === "employeurs" && (
-                  <div
-                    onClick={(e) => e.stopPropagation()}
-                    className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]"
-                  >
+                  <div className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden z-50">
                     <div className="p-6">
                       <div className="mb-4">
                         <h3 className="font-bold text-lg mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -215,45 +279,21 @@ export function SiteHeader() {
                         <p className="text-sm text-muted-foreground">Solutions de recrutement sur mesure</p>
                       </div>
                       <div className="space-y-3">
-                        <Link
-                          href="/employeurs"
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
-                          onClick={closeDropdown}
-                        >
-                          <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                            <Building2 className="h-4 w-4 text-primary" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Vue d'ensemble</div>
-                            <div className="text-xs text-muted-foreground">Nos solutions RH</div>
-                          </div>
-                        </Link>
-                        <Link
-                          href="/employeurs/industries"
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
-                          onClick={closeDropdown}
-                        >
-                          <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                            <Users className="h-4 w-4 text-primary" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Industries desservies</div>
-                            <div className="text-xs text-muted-foreground">Secteurs d'expertise</div>
-                          </div>
-                        </Link>
-                        <Link
-                          href="/employeurs/publier-offre"
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
-                          onClick={closeDropdown}
-                        >
-                          <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                            <Sparkles className="h-4 w-4 text-primary" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Publier une offre</div>
-                            <div className="text-xs text-muted-foreground">Trouvez vos talents</div>
-                          </div>
-                        </Link>
+                        {employeursDropdown.map((item, index) => (
+                          <button
+                            key={index}
+                            onClick={() => handleDropdownItemClick(item.href)}
+                            className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer text-left"
+                          >
+                            <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                              {item.icon}
+                            </div>
+                            <div>
+                              <div className="font-medium">{item.title}</div>
+                              <div className="text-xs text-muted-foreground">{item.description}</div>
+                            </div>
+                          </button>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -267,9 +307,8 @@ export function SiteHeader() {
                     ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
                     : "hover:bg-white/10 hover:text-primary hover:shadow-md"
                 }`}
-                onClick={closeDropdown}
               >
-                À Propos
+                {t('navigation.about')}
               </Link>
 
               <Link
@@ -279,9 +318,8 @@ export function SiteHeader() {
                     ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
                     : "hover:bg-white/10 hover:text-primary hover:shadow-md"
                 }`}
-                onClick={closeDropdown}
               >
-                Services
+                {t('navigation.services')}
               </Link>
             </nav>
           </div>
@@ -290,31 +328,26 @@ export function SiteHeader() {
             <Link
               href="/blog"
               className="hidden lg:flex px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary hover:shadow-md"
-              onClick={closeDropdown}
             >
-              Blog
+              {t('navigation.blog')}
             </Link>
 
             <button
               className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:text-primary hover:shadow-md"
               aria-label="Rechercher"
-              // Add onClick handler for search functionality if needed
             >
               <Search className="h-4 w-4" />
             </button>
 
             {/* Account Dropdown */}
-            <div className="relative hidden md:block">
+            <div className="relative hidden md:block" ref={accountRef}>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDropdownToggle("account");
-                }}
+                onClick={() => toggleDropdown("account")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
-                    activeDropdown === "account"
-                      ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
-                      : "hover:bg-white/10 hover:text-primary hover:shadow-md"
-                  }`}
+                  activeDropdown === "account"
+                    ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
+                    : "hover:bg-white/10 hover:text-primary hover:shadow-md"
+                }`}
                 aria-label="Compte"
               >
                 <User className="h-4 w-4" />
@@ -324,95 +357,41 @@ export function SiteHeader() {
               </button>
 
               {activeDropdown === "account" && (
-                <div
-                  onClick={(e) => e.stopPropagation()}
-                  className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]"
-                >
+                <div className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden z-50">
                   <div className="p-4">
                     <div className="space-y-2">
-                      <Link
-                        href="/login"
-                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
-                        onClick={closeDropdown}
+                      <button
+                        onClick={() => handleDropdownItemClick("/login")}
+                        className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer text-left"
                       >
                         <LogIn className="h-4 w-4 text-primary" />
-                        <span>Se connecter</span>
-                      </Link>
-                      <Link
-                        href="/register"
-                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer"
-                        onClick={closeDropdown}
+                        <span>{t('navigation.login')}</span>
+                      </button>
+                      <button
+                        onClick={() => handleDropdownItemClick("/register")}
+                        className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 group cursor-pointer text-left"
                       >
                         <User className="h-4 w-4 text-primary" />
-                        <span>Créer un compte</span>
-                      </Link>
+                        <span>{t('navigation.register')}</span>
+                      </button>
                     </div>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Language Dropdown */}
-            <div className="relative">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDropdownToggle("language");
-                }}
-                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
-                    activeDropdown === "language"
-                      ? "text-primary bg-primary/10 backdrop-blur-sm shadow-md"
-                      : "hover:bg-white/10 hover:text-primary hover:shadow-md"
-                  }`}
-                aria-label="Changer de langue"
-              >
-                <Globe className="h-4 w-4" />
-                <span className="hidden md:inline">FR</span> {/* Assuming FR is default */}
-                <ChevronDown
-                  className={`h-4 w-4 transition-transform duration-300 ${activeDropdown === "language" ? "rotate-180" : ""}`}
-                />
-              </button>
-
-              {activeDropdown === "language" && (
-                <div
-                  onClick={(e) => e.stopPropagation()}
-                  className="absolute top-full right-0 mt-2 w-32 rounded-xl bg-background/95 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden animate-in slide-in-from-top-5 duration-300 z-[60]"
-                >
-                  <div className="p-2">
-                    <button
-                      className="w-full text-left p-2 rounded-lg hover:bg-primary/5 transition-all duration-300 cursor-pointer"
-                      onClick={() => {
-                        // Add language change logic here for French
-                        console.log("Language set to French");
-                        closeDropdown();
-                      }}
-                    >
-                      Français
-                    </button>
-                    <button
-                      className="w-full text-left p-2 rounded-lg hover:bg-primary/5 transition-all duration-300 cursor-pointer"
-                      onClick={() => {
-                        // Add language change logic here for English
-                        console.log("Language set to English");
-                        closeDropdown();
-                      }}
-                    >
-                      English
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
+            {/* Language Switcher */}
+            <LanguageSwitcher />
+            
             <ThemeToggle />
 
             <Button
               size="sm"
               className="hidden md:inline-flex rounded-xl bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
-              // Add onClick for contact if it's a link or opens a modal
+              onClick={() => router.push('/contact')}
             >
               <Phone className="mr-2 h-4 w-4" />
-              Contact
+              {t('navigation.contact')}
             </Button>
 
             {/* Mobile Menu Toggle */}
@@ -431,36 +410,23 @@ export function SiteHeader() {
       {isMobileMenuOpen && (
         <div className="lg:hidden mt-2 mx-2 rounded-2xl bg-background/80 backdrop-blur-xl shadow-2xl border border-white/20 overflow-y-auto max-h-[calc(100vh-5rem)] animate-in slide-in-from-top-5 duration-300">
           <div className="py-6 space-y-6 px-6">
-            {/* Mobile Menu Content (ensure links close the mobile menu) */}
+            {/* Mobile Menu Content */}
             <div className="space-y-4">
               <div className="font-bold text-lg bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                 Candidats
               </div>
               <nav className="flex flex-col space-y-2 pl-4">
-                <Link
-                  href="/candidats"
-                  className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Briefcase className="h-4 w-4 text-primary" />
-                  Vue d'ensemble
-                </Link>
-                <Link
-                  href="/candidats/emplois"
-                  className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Search className="h-4 w-4 text-primary" />
-                  Offres d'emploi
-                </Link>
-                 <Link
-                  href="/candidats/faire-carriere"
-                  className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Sparkles className="h-4 w-4 text-primary" />
-                  Faire carrière avec R+
-                </Link>
+                {candidatsDropdown.map((item, index) => (
+                  <Link
+                    key={index}
+                    href={item.href}
+                    className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {React.cloneElement(item.icon as React.ReactElement, {})}
+                    {item.title}
+                  </Link>
+                ))}
               </nav>
             </div>
 
@@ -469,30 +435,17 @@ export function SiteHeader() {
                 Employeurs
               </div>
               <nav className="flex flex-col space-y-2 pl-4">
-                <Link
-                  href="/employeurs"
-                  className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Building2 className="h-4 w-4 text-primary" />
-                  Vue d'ensemble
-                </Link>
-                <Link
-                  href="/employeurs/industries"
-                  className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Users className="h-4 w-4 text-primary" />
-                  Industries desservies
-                </Link>
-                <Link
-                  href="/employeurs/publier-offre"
-                  className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Sparkles className="h-4 w-4 text-primary" />
-                  Publier une offre
-                </Link>
+                {employeursDropdown.map((item, index) => (
+                  <Link
+                    key={index}
+                    href={item.href}
+                    className="flex items-center gap-3 px-3 py-2 text-sm rounded-xl hover:bg-primary/5 transition-all duration-300"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {React.cloneElement(item.icon as React.ReactElement, {})}
+                    {item.title}
+                  </Link>
+                ))}
               </nav>
             </div>
 
@@ -510,14 +463,14 @@ export function SiteHeader() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <Briefcase className="h-4 w-4 text-primary" />
-                Services
+                {t('navigation.services')}
               </Link>
-               <Link
+              <Link
                 href="/blog"
                 className="flex items-center gap-3 px-3 py-2 font-medium rounded-xl hover:bg-primary/5 transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <Search className="h-4 w-4 text-primary" /> {/* Placeholder icon, adjust as needed */}
+                <Search className="h-4 w-4 text-primary" />
                 Blog
               </Link>
               <Link
@@ -526,15 +479,15 @@ export function SiteHeader() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <LogIn className="h-4 w-4 text-primary" />
-                Se connecter
+                {t('navigation.login')}
               </Link>
-               <Link
+              <Link
                 href="/register"
                 className="flex items-center gap-3 px-3 py-2 font-medium rounded-xl hover:bg-primary/5 transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <User className="h-4 w-4 text-primary" />
-                Créer un compte
+                {t('navigation.register')}
               </Link>
             </div>
 
@@ -542,25 +495,16 @@ export function SiteHeader() {
               <Button
                 className="w-full rounded-xl bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
                 onClick={() => {
-                  // Add contact action here
-                  setIsMobileMenuOpen(false);
+                  setIsMobileMenuOpen(false)
+                  router.push('/contact')
                 }}
               >
                 <Phone className="mr-2 h-4 w-4" />
-                Contact
+                {t('navigation.contact')}
               </Button>
             </div>
           </div>
         </div>
-      )}
-
-      {/* Overlay to close dropdowns when clicking outside */}
-      {activeDropdown && (
-        <div
-          className="fixed inset-0 z-40" // z-index below dropdown panel (z-[60]) but above other content
-          onClick={closeDropdown}
-          aria-hidden="true"
-        />
       )}
     </header>
   )

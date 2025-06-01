@@ -2,13 +2,14 @@ import type React from "react"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SiteHeader } from "@/components/site-header"
 import { FloatingContact } from "@/components/floating-contact"
+import { LanguageProvider } from "@/contexts/LanguageContext"
 import "./globals.css"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Recruitment Plus",
   description: "Solutions de recrutement personnalisées pour employeurs et candidats",
-    generator: 'v0.dev'
+  generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -17,14 +18,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <body className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
-          <div className="flex min-h-screen flex-col">
-            <SiteHeader />
-            <main className="flex-1">{children}</main>
-            <FloatingContact />
-          </div>
+          <LanguageProvider>
+            <div className="flex min-h-screen flex-col">
+              <SiteHeader />
+              <main className="flex-1">{children}</main>
+              <FloatingContact />
+            </div>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>
