@@ -1,6 +1,7 @@
 "use client"
 
 import { useContext } from "react"
+import Link from "next/link"
 import { useLanguage } from "@/contexts/LanguageContext"
 import { JobCard } from "@/components/ui/job-card"
 import { Button } from "@/components/ui/button"
@@ -255,7 +256,11 @@ export default function EmploisPage() {
 
                 <div className="space-y-6">
                   {jobExamples.map((job: Job, index: number) => (
-                    <div key={index} className="bg-background/70 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/20 overflow-hidden">
+                    <Link 
+                      key={index} 
+                      href={`/candidats/emplois/${job.title.toLowerCase().replace(/\s+/g, '-')}`}
+                      className="block bg-background/70 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/20 overflow-hidden"
+                    >
                       <JobCard
                         title={job.title}
                         company={job.company}
@@ -264,9 +269,13 @@ export default function EmploisPage() {
                         salary={job.salary}
                         tags={job.tags}
                         postedDate={job.posted}
-                        onApply={handleApply}
+                        onApply={(e) => {
+                          e.preventDefault(); // Prevent the link from navigating
+                          e.stopPropagation(); // Prevent event bubbling
+                          handleApply();
+                        }}
                       />
-                    </div>
+                    </Link>
                   ))}
                 </div>
 

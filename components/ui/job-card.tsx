@@ -13,7 +13,7 @@ interface JobCardProps {
   salary?: string
   tags?: string[]
   postedDate: string
-  onApply: () => void
+  onApply: (e?: React.MouseEvent) => void
 }
 
 export function JobCard({ title, company, location, type, salary, tags, postedDate, onApply }: JobCardProps) {
@@ -50,7 +50,7 @@ export function JobCard({ title, company, location, type, salary, tags, postedDa
         )}
       </CardContent>
       <CardFooter>
-        <Button onClick={onApply} className="w-full">
+        <Button onClick={(e) => onApply(e)} className="w-full">
           {t('candidates.jobs.apply_button')}
         </Button>
       </CardFooter>
