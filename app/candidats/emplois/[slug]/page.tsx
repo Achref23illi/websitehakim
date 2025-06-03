@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
@@ -24,11 +24,12 @@ export default function JobDetailsPage({ params }: { params: { slug: string } })
   const dateLocale = locale === 'fr' ? fr : enUS
   const t = locale === 'fr' ? frTranslations : enTranslations
   
-  // In server components, direct destructuring works in Next.js 15
-  const { slug } = params
+  // Use params.slug directly as provided by Next.js
+  const slug = params.slug
   
   // Get the appropriate job based on the slug and language
-  const job = jobListings[locale]?.[slug]
+  // Use type assertion to fix TypeScript error
+  const job = jobListings[locale]?.[slug as keyof typeof jobListings[typeof locale]]
   
   // Format date
   const formatDate = (dateString: string) => {

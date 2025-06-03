@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, use } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
@@ -25,11 +25,12 @@ export default function JobApplicationPage() {
   const params = useParams<{ slug: string }>()
   const router = useRouter()
   
-  // Directly access the slug from the params hook
+  // Get slug from params directly
   const slug = params.slug
   
   // Get job details from the job listings
-  const job = jobListings[locale]?.[slug]
+  // Use type assertion to fix TypeScript error
+  const job = jobListings[locale]?.[slug as keyof typeof jobListings[typeof locale]]
   
   // State for multi-step form
   const [currentStep, setCurrentStep] = useState<'upload' | 'personal' | 'confirmation'>('upload')
