@@ -1,6 +1,7 @@
 import type React from "react"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 import { FloatingContact } from "@/components/floating-contact"
 import { LanguageProvider } from "@/contexts/LanguageContext"
 import "./globals.css"
@@ -25,6 +26,7 @@ export default function RootLayout({
             <div className="flex min-h-screen flex-col">
               <SiteHeader />
               <main className="flex-1">{children}</main>
+              <SiteFooter />
               <FloatingContact />
             </div>
           </LanguageProvider>
