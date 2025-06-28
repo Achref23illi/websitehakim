@@ -14,9 +14,11 @@ import {
   Clock,
   Search,
   TrendingUp,
+  Plane,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/LanguageContext"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function ServicesPage() {
   const { t } = useLanguage();
@@ -182,32 +184,75 @@ export default function ServicesPage() {
               </p>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {t('services.industry_list').map((industry, index) => {
-                const colors = [
-                  "from-blue-500/20 to-blue-600/20",
-                  "from-green-500/20 to-green-600/20",
-                  "from-yellow-500/20 to-yellow-600/20",
-                  "from-purple-500/20 to-purple-600/20",
-                  "from-red-500/20 to-red-600/20",
-                  "from-orange-500/20 to-orange-600/20",
-                  "from-indigo-500/20 to-indigo-600/20",
-                  "from-pink-500/20 to-pink-600/20",
-                  "from-cyan-500/20 to-cyan-600/20"
-                ];
-                const color = colors[index % colors.length];
-                return (
-                <div key={index} className="magic-card p-6 text-center group">
-                  <div
-                    className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    <span className="text-2xl">{industry.emoji}</span>
-                  </div>
-                  <h3 className="font-bold text-lg">{industry.name}</h3>
+            <Tabs defaultValue="aerospace" className="w-full mb-8">
+              <div className="flex justify-center mb-8">
+                <TabsList className="grid w-full max-w-md grid-cols-2">
+                  <TabsTrigger value="aerospace" className="flex items-center gap-2">
+                    <Plane className="h-4 w-4" />
+                    {t('services.industries.categories.aerospace') || "Aérospatiale"}
+                  </TabsTrigger>
+                  <TabsTrigger value="others" className="flex items-center gap-2">
+                    <Building2 className="h-4 w-4" />
+                    {t('services.industries.categories.others') || "Autres"}
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+
+              {/* Aerospace Industries Tab */}
+              <TabsContent value="aerospace">
+                <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                  {t('services.industry_list')
+                    .filter(industry => industry.category === 'aerospace' || industry.name.includes('Aéro') || industry.name.includes('Aero') || industry.name.includes('Aviation'))
+                    .map((industry, index) => {
+                      const colors = [
+                        "from-blue-500/20 to-blue-600/20",
+                        "from-indigo-500/20 to-indigo-600/20",
+                        "from-cyan-500/20 to-cyan-600/20"
+                      ];
+                      const color = colors[index % colors.length];
+                      return (
+                      <div key={index} className="magic-card p-6 text-center group">
+                        <div
+                          className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
+                        >
+                          <span className="text-2xl">{industry.emoji || "✈️"}</span>
+                        </div>
+                        <h3 className="font-bold text-lg">{industry.name}</h3>
+                      </div>
+                    );
+                  })}
                 </div>
-              );
-              })}
-            </div>
+              </TabsContent>
+
+              {/* Other Industries Tab */}
+              <TabsContent value="others">
+                <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                  {t('services.industry_list')
+                    .filter(industry => industry.category !== 'aerospace' && !industry.name.includes('Aéro') && !industry.name.includes('Aero') && !industry.name.includes('Aviation'))
+                    .map((industry, index) => {
+                      const colors = [
+                        "from-green-500/20 to-green-600/20",
+                        "from-yellow-500/20 to-yellow-600/20",
+                        "from-purple-500/20 to-purple-600/20",
+                        "from-red-500/20 to-red-600/20",
+                        "from-orange-500/20 to-orange-600/20",
+                        "from-pink-500/20 to-pink-600/20"
+                      ];
+                      const color = colors[index % colors.length];
+                      return (
+                      <div key={index} className="magic-card p-6 text-center group">
+                        <div
+                          className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
+                        >
+                          <span className="text-2xl">{industry.emoji}</span>
+                        </div>
+                        <h3 className="font-bold text-lg">{industry.name}</h3>
+                      </div>
+                    );
+                  })}
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </section>
 

@@ -5,6 +5,7 @@ import Image from "next/image"
 import { MapPin, Phone, Mail, Sparkles, Users, Award, Target, Heart, Shield, Zap, Globe } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/LanguageContext"
+import { Badge } from "@/components/ui/badge"
 
 export default function AProposPage() {
   const { t } = useLanguage();
@@ -178,80 +179,97 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* Team Section */}
+        {/* Branch Offices Section (Replacing Team Section) */}
         <section className="py-16 md:py-24 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-t from-muted/50 to-transparent"></div>
           <div className="container relative">
             <div className="text-center mb-16">
               <div className="inline-block mb-4 px-4 py-1.5 bg-primary/10 backdrop-blur-sm rounded-full text-primary font-medium text-sm shimmer">
-                <Users className="inline-block h-4 w-4 mr-2" />
-                {t('about.team.badge')}
+                <MapPin className="inline-block h-4 w-4 mr-2" />
+                {t('about.branch_offices.badge') || t('about.team.badge')}
               </div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                {t('about.team.title')}
+                {t('about.branch_offices.title') || t('about.locations.title')}
               </h2>
               <p className="max-w-2xl mx-auto text-muted-foreground">
-                {t('about.team.description')}
+                {t('about.branch_offices.description') || t('about.locations.description')}
               </p>
             </div>
 
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { 
-                  name: t('about.team.members.0.name'), 
-                  role: t('about.team.members.0.role'), 
-                  initial: t('about.team.members.0.initial')
+                {
+                  city: t('about.locations.locations.0.city'),
+                  address: t('about.locations.locations.0.address'),
+                  phone: t('about.locations.locations.0.phone'),
+                  email: t('about.locations.locations.0.email'),
+                  image: "/placeholder.jpg",
+                  employees: "15+",
+                  services: t('about.branch_offices.offices.0.services') || "Recrutement local et national"
                 },
-                { 
-                  name: t('about.team.members.1.name'), 
-                  role: t('about.team.members.1.role'), 
-                  initial: t('about.team.members.1.initial')
+                {
+                  city: t('about.locations.locations.1.city'),
+                  address: t('about.locations.locations.1.address'),
+                  phone: t('about.locations.locations.1.phone'),
+                  email: t('about.locations.locations.1.email'),
+                  image: "/placeholder.jpg",
+                  employees: "10+",
+                  services: t('about.branch_offices.offices.1.services') || "Recrutement spécialisé aérospatial"
                 },
-                { 
-                  name: t('about.team.members.2.name'), 
-                  role: t('about.team.members.2.role'), 
-                  initial: t('about.team.members.2.initial')
+                {
+                  city: t('about.locations.locations.2.city'),
+                  address: t('about.locations.locations.2.address'),
+                  phone: t('about.locations.locations.2.phone'),
+                  email: t('about.locations.locations.2.email'),
+                  image: "/placeholder.jpg",
+                  employees: "8+",
+                  services: t('about.branch_offices.offices.2.services') || "Recrutement international"
                 },
-                { 
-                  name: t('about.team.members.3.name'), 
-                  role: t('about.team.members.3.role'), 
-                  initial: t('about.team.members.3.initial')
-                },
-              ].map((member, index) => (
-                <div key={index} className="magic-card p-6 text-center group">
-                  <div className="relative h-32 w-32 mx-auto mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                    <span className="text-4xl font-bold text-primary">{member.initial}</span>
+              ].map((office, index) => (
+                <div key={index} className="magic-card overflow-hidden group">
+                  <div className="h-48 overflow-hidden">
+                    <Image
+                      src={office.image}
+                      alt={`${office.city} office`}
+                      width={400}
+                      height={300}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
                   </div>
-                  <h3 className="font-bold text-lg mb-2">{member.name}</h3>
-                  <p className="text-sm text-muted-foreground mb-4">{member.role}</p>
-                  <div className="flex justify-center gap-3">
-                    <Link
-                      href="#"
-                      className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors text-primary"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-4 w-4"
-                      >
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                        <rect width="4" height="12" x="2" y="9" />
-                        <circle cx="4" cy="4" r="2" />
-                      </svg>
-                    </Link>
-                    <Link
-                      href="#"
-                      className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors text-primary"
-                    >
-                      <Mail className="h-4 w-4" />
-                    </Link>
+                  <div className="p-6">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="font-bold text-xl text-primary">{office.city}</h3>
+                      <Badge variant="outline" className="bg-primary/10 text-primary">
+                        {office.employees} {t('about.branch_offices.employees') || "Employés"}
+                      </Badge>
+                    </div>
+                    
+                    <div className="space-y-3 mb-4">
+                      <div className="flex items-start gap-3">
+                        <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                        <span className="text-sm text-muted-foreground">{office.address}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Phone className="h-5 w-5 text-primary shrink-0" />
+                        <span className="text-sm text-muted-foreground">{office.phone}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Mail className="h-5 w-5 text-primary shrink-0" />
+                        <span className="text-sm text-muted-foreground">{office.email}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="pt-4 border-t">
+                      <h4 className="font-medium mb-2">{t('about.branch_offices.services') || "Services"}</h4>
+                      <p className="text-sm text-muted-foreground">{office.services}</p>
+                    </div>
+                    
+                    <div className="mt-4">
+                      <Button variant="outline" size="sm" className="w-full">
+                        <MapPin className="h-4 w-4 mr-2" />
+                        {t('about.locations.view_map')}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}

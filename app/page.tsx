@@ -6,9 +6,32 @@ import { Search, MapPin, ChevronRight, Phone, ArrowRight, Sparkles } from "lucid
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useLanguage } from "@/contexts/LanguageContext"
+import { useRouter } from "next/navigation"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import React from "react"
 
 export default function Home() {
   const { t } = useLanguage();
+  const router = useRouter();
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [selectedLocation, setSelectedLocation] = React.useState("all");
+  const [locations, setLocations] = React.useState<string[]>([]);
+
+  // Extract locations on mount (client only)
+  React.useEffect(() => {
+    const jobExamplesData = t('candidates.jobs.job_examples');
+    setLocations(Array.isArray(jobExamplesData)
+      ? Array.from(new Set(jobExamplesData.map((job: any) => job.location))).filter(Boolean)
+      : []);
+  }, [t]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (searchTerm) params.set("q", searchTerm);
+    if (selectedLocation && selectedLocation !== "all") params.set("location", selectedLocation);
+    router.push(`/candidats/emplois?${params.toString()}`);
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -54,25 +77,35 @@ export default function Home() {
               {t('home.hero.subtitle')}
             </p>
             <div className="magic-card w-full max-w-3xl p-4 shadow-2xl">
-              <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto]">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    placeholder={t('candidates.jobs.search_placeholder')}
-                    className="magic-input pl-10"
-                  />
+              <form onSubmit={handleSearch}>
+                <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto]">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      value={searchTerm}
+                      onChange={e => setSearchTerm(e.target.value)}
+                      placeholder={t('candidates.jobs.search_placeholder')}
+                      className="magic-input pl-10"
+                    />
+                  </div>
+                  <div className="relative">
+                    <Select value={selectedLocation} onValueChange={setSelectedLocation}>
+                      <SelectTrigger className="w-full magic-input pl-10">
+                        <SelectValue placeholder={t('candidates.jobs.location_placeholder')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">{t('candidates.jobs.location_all') || "Toutes les localisations"}</SelectItem>
+                        {locations.map((loc: string) => (
+                          <SelectItem key={loc} value={loc}>{loc}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  </div>
+                  <Button type="submit" className="magic-button w-full md:w-auto">{t('candidates.jobs.search_button')}</Button>
                 </div>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input 
-                    type="text" 
-                    placeholder={t('candidates.jobs.location_placeholder')} 
-                    className="magic-input pl-10" 
-                  />
-                </div>
-                <Button className="magic-button w-full md:w-auto">{t('candidates.jobs.search_button')}</Button>
-              </div>
+              </form>
             </div>
             <Button
               variant="outline"

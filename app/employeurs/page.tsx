@@ -351,48 +351,6 @@ export default function EmployeursPage() {
           </div>
         </section>
 
-        {/* Testimonials */}
-        <section className="py-16 md:py-24 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-t from-muted/50 to-transparent"></div>
-          <div className="container relative">
-            <div className="text-center mb-16">
-              <div className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 backdrop-blur-sm rounded-full text-secondary font-medium text-sm shimmer">
-                <Star className="inline-block h-4 w-4 mr-2" />
-                {t('employers.testimonials.badge')}
-              </div>
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                {t('employers.testimonials.title')}
-              </h2>
-              <p className="max-w-2xl mx-auto text-muted-foreground">
-                {t('employers.testimonials.description')}
-              </p>
-            </div>
-
-            <div className="grid gap-8 md:grid-cols-2">
-              {t('employers.testimonials.testimonials').map((testimonial, index) => (
-                <div key={index} className="magic-card p-8 relative">
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-secondary/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                  <div className="flex items-center gap-4 mb-6 relative">
-                    <div className="h-16 w-16 rounded-full bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center">
-                      <span className="text-2xl font-bold text-secondary">{testimonial.name[0]}</span>
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-lg">{testimonial.name}</h3>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-1 mb-6">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-secondary text-secondary" />
-                    ))}
-                  </div>
-                  <p className="italic text-muted-foreground leading-relaxed text-lg">"{testimonial.content}"</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* CTA Section */}
         <section className="py-16 md:py-24 relative overflow-hidden">
           <div className="container relative">

@@ -284,7 +284,9 @@
           "tags": ["B2B", "Développement d'affaires", "Bilingue"],
           "posted": "Il y a 1 jour"
         }
-      ]
+      ],
+      "location_filter": "Localisation",
+      "location_all": "Toutes les localisations"
     }
   },
   "employers": {

@@ -75,17 +75,11 @@ export function SiteHeader() {
       title: "Vue d'ensemble",
       description: "Nos solutions RH",
     },
-    // {
-    //   href: "/employeurs/industries",
-    //   icon: <Users className="h-4 w-4 text-primary" />,
-    //   title: "Industries desservies",
-    //   description: "Secteurs d'expertise",
-    // },
     {
-      href: "/employeurs/publier-offre",
-      icon: <Sparkles className="h-4 w-4 text-primary" />,
-      title: "Publier une offre",
-      description: "Trouvez vos talents",
+      href: "https://recplus.vercel.app/login",
+      icon: <Users className="h-4 w-4 text-primary" />,
+      title: "Tableau de bord",
+      description: "Gérer vos offres",
     },
   ]
 
@@ -168,7 +162,11 @@ export function SiteHeader() {
   // Handle dropdown item click
   const handleDropdownItemClick = (href: string) => {
     setActiveDropdown(null)
-    router.push(href)
+    if (href.startsWith("http")) {
+      window.location.href = href
+    } else {
+      router.push(href)
+    }
   }
 
   return (

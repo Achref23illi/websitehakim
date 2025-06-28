@@ -284,7 +284,9 @@
           "tags": ["B2B", "Business development", "Bilingual"],
           "posted": "1 day ago"
         }
-      ]
+      ],
+      "location_filter": "Location",
+      "location_all": "All locations"
     }
   },
   "employers": {

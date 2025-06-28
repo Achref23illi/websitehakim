@@ -70,6 +70,9 @@ export default function ContactPage() {
           : 'Message must be at least 20 characters' 
       }),
     userType: z.string().optional(),
+    officeLocation: z.string().min(1, {
+      message: locale === 'fr' ? 'Veuillez sélectionner un bureau' : 'Please select an office'
+    }),
   })
 
   // Initialize form
@@ -82,6 +85,7 @@ export default function ContactPage() {
       subject: "",
       message: "",
       userType: "",
+      officeLocation: "",
     },
   })
 
@@ -371,36 +375,69 @@ export default function ContactPage() {
 
                             <FormField
                               control={form.control}
-                              name="userType"
+                              name="officeLocation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormLabel className="flex items-center text-base">
-                                    <User className="mr-2 h-4 w-4 text-primary" />
-                                    {locale === 'fr' ? 'Vous êtes' : 'You are'}
+                                    <MapPin className="mr-2 h-4 w-4 text-primary" />
+                                    {locale === 'fr' ? 'Bureau à contacter' : 'Office to contact'}
                                   </FormLabel>
                                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                       <SelectTrigger className="bg-background/50 backdrop-blur-sm border-input/50 focus-visible:ring-primary/50">
-                                        <SelectValue placeholder={locale === 'fr' ? 'Sélectionnez une option' : 'Select an option'} />
+                                        <SelectValue placeholder={locale === 'fr' ? 'Sélectionnez un bureau' : 'Select an office'} />
                                       </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                      <SelectItem value="candidate">
-                                        {locale === 'fr' ? 'Candidat' : 'Candidate'}
-                                      </SelectItem>
-                                      <SelectItem value="employer">
-                                        {locale === 'fr' ? 'Employeur' : 'Employer'}
-                                      </SelectItem>
-                                      <SelectItem value="other">
-                                        {locale === 'fr' ? 'Autre' : 'Other'}
-                                      </SelectItem>
+                                      {officeLocations.map((office, index) => (
+                                        <SelectItem key={index} value={office.city}>
+                                          {office.city}
+                                        </SelectItem>
+                                      ))}
                                     </SelectContent>
                                   </Select>
+                                  <FormDescription>
+                                    {locale === 'fr' 
+                                      ? 'Sélectionnez le bureau que vous souhaitez contacter' 
+                                      : 'Select the office you want to contact'}
+                                  </FormDescription>
                                   <FormMessage />
                                 </FormItem>
                               )}
                             />
                           </div>
+
+                          <FormField
+                            control={form.control}
+                            name="userType"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="flex items-center text-base">
+                                  <User className="mr-2 h-4 w-4 text-primary" />
+                                  {locale === 'fr' ? 'Vous êtes' : 'You are'}
+                                </FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                  <FormControl>
+                                    <SelectTrigger className="bg-background/50 backdrop-blur-sm border-input/50 focus-visible:ring-primary/50">
+                                      <SelectValue placeholder={locale === 'fr' ? 'Sélectionnez une option' : 'Select an option'} />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    <SelectItem value="candidate">
+                                      {locale === 'fr' ? 'Candidat' : 'Candidate'}
+                                    </SelectItem>
+                                    <SelectItem value="employer">
+                                      {locale === 'fr' ? 'Employeur' : 'Employer'}
+                                    </SelectItem>
+                                    <SelectItem value="other">
+                                      {locale === 'fr' ? 'Autre' : 'Other'}
+                                    </SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
 
                           <FormField
                             control={form.control}

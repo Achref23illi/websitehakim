@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { FloatingContact } from "@/components/floating-contact"
+import { CookieConsent } from "@/components/ui/cookie-consent"
 import { LanguageProvider } from "@/contexts/LanguageContext"
 import "./globals.css"
 import type { Metadata } from "next"
@@ -28,6 +29,7 @@ export default function RootLayout({
               <main className="flex-1">{children}</main>
               <SiteFooter />
               <FloatingContact />
+              <CookieConsent />
             </div>
           </LanguageProvider>
         </ThemeProvider>

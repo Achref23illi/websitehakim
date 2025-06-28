@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, Filter } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
+import { useRouter, useSearchParams } from "next/navigation"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import React from "react"
 
 // Define the job type based on JobCardProps with support for both languages
 interface Job {
@@ -22,6 +25,10 @@ interface Job {
 
 export default function EmploisPage() {
   const { t } = useLanguage()
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [selectedLocation, setSelectedLocation] = React.useState<string>("all");
+  const [locations, setLocations] = React.useState<string[]>([]);
   
   // Cette fonction serait normalement connectée à un vrai système de candidature
   const handleApply = () => {
@@ -36,7 +43,7 @@ export default function EmploisPage() {
         title: job.title,
         company: job.company,
         location: job.location,
-        type: job.type as "Temps plein" | "Temps partiel" | "Contractuel" | "Temporaire",
+        type: job.type as Job["type"],
         salary: job.salary,
         tags: job.tags,
         posted: job.posted
@@ -45,8 +52,23 @@ export default function EmploisPage() {
     return [];
   };
 
-  // Get job examples
   const jobExamples = getJobExamples();
+
+  // Extract unique locations on mount (client only)
+  React.useEffect(() => {
+    setLocations(Array.from(new Set(jobExamples.map(j => j.location))).filter(Boolean));
+  }, [t]);
+
+  // Read location from query param on mount
+  React.useEffect(() => {
+    const loc = searchParams.get("location") || "all";
+    setSelectedLocation(loc);
+  }, [searchParams]);
+
+  // Filter jobs by selected location
+  const filteredJobs = selectedLocation && selectedLocation !== "all"
+    ? jobExamples.filter(j => j.location === selectedLocation)
+    : jobExamples;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -230,6 +252,28 @@ export default function EmploisPage() {
                     </div>
                   </div>
 
+                  {/* Location Filter */}
+                  <div>
+                    <h4 className="font-medium mb-3 text-primary">{t('candidates.jobs.location_filter') || "Localisation"}</h4>
+                    <Select value={selectedLocation} onValueChange={value => {
+                      setSelectedLocation(value);
+                      // Update query param
+                      const params = new URLSearchParams(Array.from(searchParams.entries()));
+                      if (value && value !== "all") params.set("location", value); else params.delete("location");
+                      router.replace(`?${params.toString()}`);
+                    }}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder={t('candidates.jobs.location_placeholder') || "Choisir une localisation"} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">{t('candidates.jobs.location_all') || "Toutes les localisations"}</SelectItem>
+                        {locations.map(loc => (
+                          <SelectItem key={loc} value={loc}>{loc}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
                   <Button 
                     className="w-full bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 text-white font-medium"
                   >
@@ -255,7 +299,7 @@ export default function EmploisPage() {
                 </div>
 
                 <div className="space-y-6">
-                  {jobExamples.map((job: Job, index: number) => (
+                  {filteredJobs.map((job: Job, index: number) => (
                     <Link 
                       key={index} 
                       href={`/candidats/emplois/${job.title.toLowerCase().replace(/\s+/g, '-')}`}
